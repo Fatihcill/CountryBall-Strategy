@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class ItemsDatabase : ScriptableObject
+public class ObjectsDatabase : ScriptableObject
 {
-    public List<ItemPreviewData> itemPreviewData;
+    public List<ObjectPreviewData> itemPreviewData;
 }
 
 
 [Serializable]
-public class ItemPreviewData
+public class ObjectPreviewData
 {
-    public enum ItemType
+    public enum ObjectType
     {
         Building,
         Unit
@@ -22,7 +22,5 @@ public class ItemPreviewData
     [field: SerializeField] public Vector2Int size { get; private set; } = Vector2Int.one;
     [field: SerializeField] public GameObject prefab { get; private set; }
     [field: SerializeField] public Sprite preview { get; private set; }
-    
-    //create a type enum, Unit or Building
-    [field: SerializeField] public ItemType type { get; private set; }
+    [field: SerializeField] public ObjectType type { get; private set; }
 }

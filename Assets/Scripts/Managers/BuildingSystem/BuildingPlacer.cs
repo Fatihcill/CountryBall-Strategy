@@ -1,34 +1,31 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.Serialization;
 
 public class BuildingPlacer : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> placedBuildingObjects = new();
-    [SerializeField] private Transform objectsParent;
+    [SerializeField] private Transform parent;
+    [SerializeField] private List<Building> placedBuildingObjects = new();
+    [SerializeField] private ObjectsDatabaseManager databaseManager;
+    [SerializeField] private InputManager inputManager;
+    [SerializeField] private ObjectPooling objectPool;
 
-    private void Awake()
+    public int PlaceBuilding(GameObject prefab, Vector3 pos, int id, ObjectPreviewData.ObjectType type)
     {
-        if (objectsParent == null)
-        {
-            objectsParent = GameObject.Find("Buildings").transform;
-        }
-    }
-
-    public int PlaceBuilding(GameObject prefab, Vector3 pos)
-    {
-        GameObject newObject = Instantiate(prefab, objectsParent);
-        newObject.transform.position = pos;
-        placedBuildingObjects.Add(newObject);
+        if (type != ObjectPreviewData.ObjectType.Building) return -1;
+        Building newBuilding = objectPool.Create(prefab, parent).GetComponent<Building>();
+        newBuilding.SetBuilding(id, databaseManager, inputManager, objectPool.pool);
+        newBuilding.transform.position = pos;
+        placedBuildingObjects.Add(newBuilding);
         return placedBuildingObjects.Count - 1;
     }
-
+ 
     public void RemoveBuildingAt(int gameObjectIndex)
     {
         if (placedBuildingObjects.Count <= gameObjectIndex) return;
-        Destroy(placedBuildingObjects[gameObjectIndex]);
+        placedBuildingObjects[gameObjectIndex].Die();
         placedBuildingObjects[gameObjectIndex] = null;
     }
 }
+

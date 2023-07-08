@@ -72,7 +72,7 @@ public class GridData
 
 public class PlacementData
 {
-    public List<Vector3Int> OccupiedCells;
+    public readonly List<Vector3Int> OccupiedCells;
     public int id { get; set; }
     public int placedObjectIndex { get; set; }
     public PlacementData(List<Vector3Int> occupiedCells, int id, int placedObjectIndex)

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3801510665933828510}
   - component: {fileID: 3801510665933828508}
   - component: {fileID: 3146647030365189089}
+  - component: {fileID: 4707872329104250681}
   m_Layer: 0
   m_Name: Barrack
   m_TagString: Untagged
@@ -45,8 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaa998736673bf14b94bbced58ce5206, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
+  _informationMenu: {fileID: 0}
   health: 0
-  cellSize: {x: 0, y: 0}
 --- !u!212 &3146647030365189089
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -99,3 +101,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &4707872329104250681
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3801510665933828499}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 4}
+    newSize: {x: 5, y: 4.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 4, y: 4}
+  m_EdgeRadius: 0

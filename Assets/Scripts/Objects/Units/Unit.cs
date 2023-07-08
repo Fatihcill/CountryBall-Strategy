@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class Unit : MonoBehaviour
 {
     public int health;
-    ItemPreviewData _itemPreviewData;
+    ObjectPreviewData _objectPreviewData;
     [SerializeField] InputManager inputManager;
     private GridData _gridData;
     private Vector3Int _oldPos;
@@ -16,12 +16,7 @@ public abstract class Unit : MonoBehaviour
     }
     protected virtual void Start()
     {
-        _gridData = GameObject.Find("Map").GetComponent<Map>().gridData;
-        _oldPos = new Vector3Int((int)transform.position.x, (int)transform.position.y);
-        _gridData.AddObject( _oldPos,
-            Vector2Int.one, 2, -1);
 
-        _cellIndicator = GameObject.Find("Map").GetComponent<Map>().cellIndicator;
     }
     protected virtual void Update()
     {
@@ -30,19 +25,16 @@ public abstract class Unit : MonoBehaviour
         // inputManager.OnExit += StopPlacement;
     }
 
-    protected virtual void OnMouseDown()
-    {
-        //inputManager.OnClicked += PlaceStructure;
-    }
 
-    public void setItemPreview(ItemPreviewData itemPreviewData)
+
+    public void setItemPreview(ObjectPreviewData objectPreviewData)
     {
-        _itemPreviewData = itemPreviewData;
+        _objectPreviewData = objectPreviewData;
     }
     public void Move(Vector3Int destination)
     {
         _gridData.RemoveObjectAt(_oldPos);
-        _gridData.AddObject(destination, _itemPreviewData.size, _itemPreviewData.id, -1);
+        _gridData.AddObject(destination, _objectPreviewData.size, _objectPreviewData.id, -1);
         transform.position = destination;
         _oldPos = destination;
     }

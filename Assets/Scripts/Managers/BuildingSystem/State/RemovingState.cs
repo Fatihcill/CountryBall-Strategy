@@ -4,37 +4,37 @@ using UnityEngine;
 
 public class RemovingState : IBuildingState
 {
-    private int gameObjectIndex = -1;
+    private int _gameObjectIndex = -1;
     private BuildingPlacer _buildingPlacer;    
-    private GridData gridData;
-    private Sprite defaultCell;
-    private CellIndicator cellIndicator;
+    private GridData _gridData;
+    private Sprite _defaultCell;
+    private CellIndicator _cellIndicator;
     public RemovingState(BuildingPlacer buildingPlacer, GridData gridData, CellIndicator cellIndicator)
     {
         this._buildingPlacer = buildingPlacer;
-        this.gridData = gridData;
-        this.cellIndicator = cellIndicator;
-        this.cellIndicator.SetSprite();
+        this._gridData = gridData;
+        this._cellIndicator = cellIndicator;
+        _cellIndicator.SetDefaultCell();
     }
     public void EndState()
     {
-        cellIndicator.SetSprite();
+        _cellIndicator.SetDefaultCell();
     }
 
     public void OnAction(Vector3Int cellPos)
     {
-        if (!gridData.CanPlaceObjectAt(cellPos, Vector2Int.one))
+        if (!_gridData.CanPlaceObjectAt(cellPos, Vector2Int.one))
         {
-            gameObjectIndex = gridData.GetRepresentationIndex(cellPos);
-            if (gameObjectIndex == -1)
+            _gameObjectIndex = _gridData.GetRepresentationIndex(cellPos);
+            if (_gameObjectIndex == -1)
                 return;
-            gridData.RemoveObjectAt(cellPos);
-            _buildingPlacer.RemoveBuildingAt(gameObjectIndex);
+            _gridData.RemoveObjectAt(cellPos);
+            _buildingPlacer.RemoveBuildingAt(_gameObjectIndex);
         }
     }
 
     public void UpdateState(Vector3Int cellPos)
     { 
-        cellIndicator.SetColor(gridData.CanPlaceObjectAt(cellPos, Vector2Int.one) ? Color.yellow : Color.red);
+        _cellIndicator.UpdateState(_gridData.CanPlaceObjectAt(cellPos, Vector2Int.one) ? Color.yellow : Color.red);
     }
 }

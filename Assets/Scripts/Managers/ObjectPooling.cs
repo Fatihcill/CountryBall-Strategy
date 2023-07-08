@@ -1,18 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
+using UnityEngine.Serialization;
 
 public class ObjectPooling : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private GameObject _prefab;
+    private Transform _parent; 
+    public IObjectPool<GameObject> pool;
+    [SerializeField] Transform defaultParent;
+    private void Awake() {
+        pool = new ObjectPool<GameObject>(
+            CreateObject,
+            OnGet,
+            OnRelease,
+            OnDie
+        );
+        _parent = defaultParent;
+    }
+    private GameObject CreateObject()
     {
-        
+        return Instantiate(_prefab, _parent);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnGet(GameObject building)
     {
-        
+        building.gameObject.SetActive(true);
+        building.transform.position = transform.position; 
+    }
+
+    private void OnRelease(GameObject building)
+    {
+        building.gameObject.SetActive(false);
+    }
+
+    private void OnDie(GameObject building)
+    {
+        Destroy(building.gameObject);
+    }
+
+    public GameObject Create(GameObject prefab, Transform parent = null)
+    {
+        _parent = parent == null ? defaultParent : parent;
+        _prefab = prefab;
+        return pool.Get();
     }
 }

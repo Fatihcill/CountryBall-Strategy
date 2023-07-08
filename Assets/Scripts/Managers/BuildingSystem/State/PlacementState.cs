@@ -4,25 +4,23 @@ using UnityEngine;
 
 public class PlacementState : IBuildingState
 {
-    private int selectedObjectIndex = -1;
-    private int id;
-    private ItemsDatabase database;
-    private BuildingPlacer _buildingPlacer;    
-    private GridData gridData;
-    private CellIndicator cellIndicator;
+    private readonly ObjectPreviewData _selectedObject;
+    private int _id;
+    private readonly BuildingPlacer _buildingPlacer;    
+    private readonly GridData _gridData;
+    private readonly CellIndicator _cellIndicator;
     
-    public PlacementState(int id, GridData gridData, ItemsDatabase database, BuildingPlacer buildingPlacer, CellIndicator cellIndicator)
+    public PlacementState(int id, GridData gridData, ObjectsDatabaseManager objectsManager, BuildingPlacer buildingPlacer, CellIndicator cellIndicator)
     {
-        this.id = id;
-        this.database = database;
+        this._id = id;
         this._buildingPlacer = buildingPlacer;
-        this.gridData = gridData;
-        this.cellIndicator = cellIndicator;
-        selectedObjectIndex = database.itemPreviewData.FindIndex(data => data.id == id);
-        if (selectedObjectIndex > -1)
+        this._gridData = gridData;
+        this._cellIndicator = cellIndicator;
+        _selectedObject = objectsManager.GetObjectData(id);
+        if (_selectedObject != null)
         {
-            cellIndicator.SetSprite(database.itemPreviewData[selectedObjectIndex].preview);
-            cellIndicator.cellOffset = (Vector2)database.itemPreviewData[selectedObjectIndex].size / 2f;
+            cellIndicator.StartPlacement(_selectedObject.preview,
+                (Vector2)_selectedObject.size);
         }
         else
             throw new System.Exception("No object with id " + id + " found");
@@ -30,25 +28,25 @@ public class PlacementState : IBuildingState
 
     public void EndState()
     {
-        cellIndicator.SetSprite();
+        _cellIndicator.SetDefaultCell();
     }
 
     public void OnAction(Vector3Int cellPos)
     {
-        if (!gridData.CanPlaceObjectAt(cellPos, database.itemPreviewData[selectedObjectIndex].size)) return;
+        if (!_gridData.CanPlaceObjectAt(cellPos, _selectedObject.size)) return;
         
-        int index = _buildingPlacer.PlaceBuilding(database.itemPreviewData[selectedObjectIndex].prefab,
-            cellPos + cellIndicator.cellOffset);
-
-        gridData.AddObject(cellPos,
-            database.itemPreviewData[selectedObjectIndex].size,
-            database.itemPreviewData[selectedObjectIndex].id, 
+        int index = _buildingPlacer.PlaceBuilding(_selectedObject.prefab,
+            cellPos + _cellIndicator.cellOffset, _id, _selectedObject.type);
+        if (index == -1) return;
+        _gridData.AddObject(cellPos,
+            _selectedObject.size,
+            _selectedObject.id, 
             index);
     }
 
     public void UpdateState(Vector3Int cellPos)
     {
-        cellIndicator.SetColor(gridData.CanPlaceObjectAt(cellPos, database.itemPreviewData[selectedObjectIndex].size)
+        _cellIndicator.UpdateState(_gridData.CanPlaceObjectAt(cellPos, _selectedObject.size)
             ? Color.green : Color.red);
     }
 }

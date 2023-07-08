@@ -8,8 +8,9 @@ using UnityEngine.EventSystems;
 public class InputManager : MonoBehaviour
 {
     [SerializeField] private Camera sceneCamera;
-    private Vector2 lastPosition;
+    private Vector2 _lastPosition;
     public event Action OnClicked, OnExit;
+    [SerializeField] protected InformationMenu informationMenu;
 
     public Vector2 GetSelectedMapPosition()
     {
@@ -30,5 +31,9 @@ public class InputManager : MonoBehaviour
         {
             OnExit?.Invoke();
         }
+    }
+    public void ShowInformationMenu(string objectName, Sprite preview, string description, bool isProduce)
+    {
+        informationMenu.ShowInformation(objectName, preview, description, isProduce);
     }
 }

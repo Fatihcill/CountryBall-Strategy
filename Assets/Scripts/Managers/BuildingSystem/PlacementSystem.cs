@@ -9,7 +9,7 @@ public class PlacementSystem : MonoBehaviour
 {
     [SerializeField] private InputManager inputManager;
     [SerializeField] private BuildingPlacer buildingPlacer;
-    [SerializeField] private ItemsDatabase database;
+    [SerializeField] private ObjectsDatabaseManager objectManager;
     [SerializeField] Map map;
     private IBuildingState _buildingState;
     
@@ -18,10 +18,16 @@ public class PlacementSystem : MonoBehaviour
         StopPlacement();
     }
 
+    private void Update()
+    {
+        if (_buildingState != null)
+            _buildingState.UpdateState(map.cellIndicator.cellPos);
+    }
+    
     public void StartPlacement(int id)
     {
         StopPlacement();
-        _buildingState = new PlacementState(id, map.gridData, database, buildingPlacer, map.cellIndicator);
+        _buildingState = new PlacementState(id, map.GridData, objectManager, buildingPlacer, map.cellIndicator);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
     }
@@ -29,10 +35,11 @@ public class PlacementSystem : MonoBehaviour
     public void StartRemoving()
     {
         StopPlacement();
-        _buildingState = new RemovingState(buildingPlacer, map.gridData, map.cellIndicator);
+        _buildingState = new RemovingState(buildingPlacer, map.GridData, map.cellIndicator);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
     }
+    
     private void StopPlacement()
     {
         if (_buildingState == null) return;
@@ -47,12 +54,5 @@ public class PlacementSystem : MonoBehaviour
         if(inputManager.IsPointerOverUI()) return;
         _buildingState.OnAction(map.cellIndicator.cellPos);
         StopPlacement();
-    }
-
-
-    private void Update()
-    {
-        if (_buildingState != null)
-            _buildingState.UpdateState(map.cellIndicator.cellPos);
     }
 }
