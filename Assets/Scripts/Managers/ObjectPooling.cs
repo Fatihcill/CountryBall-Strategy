@@ -13,7 +13,8 @@ public class ObjectPooling : MonoBehaviour
             CreateObject,
             OnGet,
             OnRelease,
-            OnDie
+            OnDie,
+            maxSize: 100
         );
         _parent = defaultParent;
     }
@@ -40,6 +41,7 @@ public class ObjectPooling : MonoBehaviour
 
     public GameObject Create(GameObject prefab, Transform parent = null)
     {
+        Debug.Log(pool);
         _parent = parent == null ? defaultParent : parent;
         _prefab = prefab;
         return pool.Get();

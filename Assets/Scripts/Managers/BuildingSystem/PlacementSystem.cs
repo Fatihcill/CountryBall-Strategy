@@ -28,28 +28,31 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         _buildingState = new PlacementState(id, map.GridData, objectManager, buildingPlacer, map.cellIndicator);
-        inputManager.OnClicked += PlaceStructure;
-        inputManager.OnExit += StopPlacement;
+        inputManager.OnClicked.AddListener(PlaceStructure);
+        inputManager.OnExit.AddListener(StopPlacement);
+        InputManager.CurrentType = Type.PlaceActıon;
     }
 
     public void StartRemoving()
     {
         StopPlacement();
         _buildingState = new RemovingState(buildingPlacer, map.GridData, map.cellIndicator);
-        inputManager.OnClicked += PlaceStructure;
-        inputManager.OnExit += StopPlacement;
+        inputManager.OnClicked.AddListener(PlaceStructure);
+        inputManager.OnExit.AddListener(StopPlacement);
+        InputManager.CurrentType = Type.DeleteActıon;
     }
     
-    private void StopPlacement()
+    public void StopPlacement()
     {
         if (_buildingState == null) return;
         _buildingState.EndState();
-        inputManager.OnClicked -= PlaceStructure;
-        inputManager.OnExit -= StopPlacement;
+        inputManager.OnClicked.RemoveListener(PlaceStructure);
+        inputManager.OnExit.RemoveListener(StopPlacement);
         _buildingState = null;
+        InputManager.CurrentType = Type.None;
     }
  
-    private void PlaceStructure()
+    [SerializeField] private void PlaceStructure()
     {
         if(inputManager.IsPointerOverUI()) return;
         _buildingState.OnAction(map.cellIndicator.cellPos);

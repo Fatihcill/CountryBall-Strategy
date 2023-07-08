@@ -5,11 +5,18 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
+public enum Type
+{
+    DeleteActıon,
+    PlaceActıon,
+    None
+}
 public class InputManager : MonoBehaviour
 {
+    public static Type CurrentType = Type.None;
     [SerializeField] private Camera sceneCamera;
     private Vector2 _lastPosition;
-    public event Action OnClicked, OnExit;
+    public UnityEvent OnClicked, OnExit;
     [SerializeField] protected InformationMenu informationMenu;
 
     public Vector2 GetSelectedMapPosition()
@@ -34,6 +41,12 @@ public class InputManager : MonoBehaviour
     }
     public void ShowInformationMenu(string objectName, Sprite preview, string description, bool isProduce)
     {
+        informationMenu.gameObject.SetActive(true);
         informationMenu.ShowInformation(objectName, preview, description, isProduce);
+    }
+
+    public void HideInfo()
+    {
+        informationMenu.gameObject.SetActive(false);
     }
 }

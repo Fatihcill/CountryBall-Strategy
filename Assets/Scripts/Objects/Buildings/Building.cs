@@ -19,15 +19,12 @@ public abstract class Building : MonoBehaviour
     }
     protected virtual void OnMouseDown()
     {
-        _inputManager.ShowInformationMenu(_buildingData.name, _buildingData.preview, "", isProduce);
+        if (InputManager.CurrentType == Type.None)  
+            _inputManager.ShowInformationMenu(_buildingData.name, _buildingData.preview, "", isProduce);
+        else   
+            _inputManager.HideInfo();
+
     }
-    public void SetPool(IObjectPool<GameObject> pool)
-    {
-        _objectPool = pool;
-    }
-
-
-
     public void SetBuilding(int id, ObjectsDatabaseManager databaseManager, InputManager inputManager, IObjectPool<GameObject> pool)
     {
         this._id = id;

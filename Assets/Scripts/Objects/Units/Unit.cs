@@ -21,7 +21,7 @@ public abstract class Unit : MonoBehaviour
     protected virtual void Update()
     {
         //check mouse clicked on the unit
-        // inputManager.OnClicked += PlaceStructure;
+        // inputManager.    OnClicked += PlaceStructure;
         // inputManager.OnExit += StopPlacement;
     }
 
