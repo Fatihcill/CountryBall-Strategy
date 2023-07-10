@@ -7,28 +7,37 @@ using UnityEngine.Pool;
 public abstract class Building : MonoBehaviour
 {
     protected int health;
-    private InputManager _inputManager;
     private ObjectPreviewData _buildingData;
     private IObjectPool<GameObject> _objectPool;
-
-    protected bool isProduce;
-    private int _id;
+    [SerializeField]protected bool IsProduce, IsClicked;
+    
     protected virtual void Awake()
     {
-        isProduce = false;
+        IsClicked = false;
+        IsProduce = false;
     }
-    protected virtual void OnMouseDown()
-    {
-        if (InputManager.CurrentType == Type.None)  
-            _inputManager.ShowInformationMenu(_buildingData.name, _buildingData.preview, "", isProduce);
-        else   
-            _inputManager.HideInfo();
 
-    }
-    public void SetBuilding(int id, ObjectsDatabaseManager databaseManager, InputManager inputManager, IObjectPool<GameObject> pool)
+    protected virtual void OnMouseUp()
     {
-        this._id = id;
-        this._inputManager = inputManager;
+        OnInfo();
+        GameManager.Instance.inputManager.OnHideInfo.AddListener(OnHide);
+    }
+
+    protected virtual void OnInfo()
+    {
+        GameManager.Instance.inputManager.ShowInformationMenu(
+            _buildingData.name, _buildingData.preview, "", true);
+        IsClicked = true;
+    }
+
+    protected virtual void OnHide()
+    {
+        Debug.Log("aaaa");
+        GameManager.Instance.inputManager.HideInfo();
+        IsClicked = false;
+    }
+    public void SetBuilding(int id, ObjectsDatabaseManager databaseManager, IObjectPool<GameObject> pool)
+    {
         _buildingData = databaseManager.GetObjectData(id);
         _objectPool = pool;
         if (_buildingData == null)
@@ -45,4 +54,5 @@ public abstract class Building : MonoBehaviour
     public void Die() {
         _objectPool.Release(this.gameObject);
     }
+    
 }

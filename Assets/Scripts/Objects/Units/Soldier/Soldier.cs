@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 
+public enum SoldierType
+{
+    Archer,
+    Scout,
+    Knight
+}
 public class Soldier : Unit
 {
     public Vector3 spawnPosition;
@@ -10,33 +16,17 @@ public class Soldier : Unit
         base.Awake();
         health = 10;
     }
-
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-    }   
     public override void TakeDamage(int amount)
     {
         this.health -= amount;
         if (this.health <= 0)
         {
             // Handle soldier's death
+            
         }
     }
-    
-    public void Move(Vector3 destination)
-    {
-        // Implementation of movement functionality goes here
-    }
-
     public virtual void Attack(Unit target)
     {
         // Implementation of attack functionality goes here
     }
-
 }

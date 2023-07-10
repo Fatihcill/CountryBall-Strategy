@@ -58,12 +58,12 @@
         }
         public void OnScroll()
         {
-            if (_scrollRect.normalizedPosition.y >= 1)
+            if (_scrollRect.verticalNormalizedPosition >= 1)
             {
                 DestroyItems();
                 MoveContent();
             }
-            else if (_scrollRect.normalizedPosition.y <= 0)
+            if (_scrollRect.verticalNormalizedPosition <= 0)
             {
                 InstantiateItem();
             }

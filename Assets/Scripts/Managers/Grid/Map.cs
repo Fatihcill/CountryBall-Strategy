@@ -1,21 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 class Map : MonoBehaviour
 {
-    public GridData GridData;
+    public static Map instance { get; private set; }
+    public GridData gridData;
+    public Dictionary<Vector2Int, Cell> cellValues = new();
     private Tilemap _environment;
     public CellIndicator cellIndicator;
-    [SerializeField] InputManager inputManager;
+    public Vector2Int currentPos;
     private void Awake()
     {
+        instance = this;
         _environment = transform.Find("Grass").GetComponent<Tilemap>();
         cellIndicator = GetComponentInChildren<CellIndicator>();
-        GridData = new GridData(_environment);
+        gridData = new GridData(_environment);
     }
-    private void OnMouseDown()
+
+    private void Start()
     {
-        inputManager.OnExit?.Invoke();
+        currentPos = cellIndicator.currentCell.pos = Vector2Int.zero;
+    }
+
+    public Cell GetNode(int x, int y)
+    {
+        Vector2Int gridPos = new Vector2Int(x, y);
+
+        if (cellValues.TryGetValue(gridPos, out var node))
+            return node;
+
+        Cell newCell = new Cell(x, y);
+        cellValues[newCell.pos] = newCell;
+        return newCell;
+    }
+
+    public bool IsCellOccupied(Vector2Int cellPos, Vector2Int size = default)
+    {
+        if (size == default)
+            size = Vector2Int.one;
+        return gridData.CanPlaceObjectAt(cellPos, size);
+    }
+    private void Update()
+    {
+        currentPos = cellIndicator.currentCell.pos;
     }
 }

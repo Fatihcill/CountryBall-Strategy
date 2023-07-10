@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -15,7 +16,7 @@ public class BuildingPlacer : MonoBehaviour
     {
         if (type != ObjectPreviewData.ObjectType.Building) return -1;
         Building newBuilding = objectPool.Create(prefab, parent).GetComponent<Building>();
-        newBuilding.SetBuilding(id, databaseManager, inputManager, objectPool.pool);
+        newBuilding.SetBuilding(id, databaseManager, objectPool.pool);
         newBuilding.transform.position = pos;
         placedBuildingObjects.Add(newBuilding);
         return placedBuildingObjects.Count - 1;

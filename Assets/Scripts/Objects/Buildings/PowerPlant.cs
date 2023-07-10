@@ -9,6 +9,16 @@ public class PowerPlant : Building
     {
         base.Awake();
         this.health = 50;
-        this.isProduce = false;
+        this.IsProduce = false;
+    }
+    
+    protected override void OnInfo()
+    {
+        base.OnInfo();
+    }
+
+    protected override void OnHide()
+    {
+        base.OnHide();
     }
 }

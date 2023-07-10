@@ -5,16 +5,16 @@ using UnityEngine.Tilemaps;
 
 public class GridData
 {
-    private Dictionary<Vector3Int, PlacementData> _placedObjects = new();
-    Tilemap _floorTilemap;
+    private Dictionary<Vector2Int, PlacementData> _placedObjects = new();
+    readonly Tilemap _floorTilemap;
 
     public GridData(Tilemap tilemap)
     {
         _floorTilemap = tilemap;
     }
-    public void AddObject(Vector3Int cellPos, Vector2Int objectSize, int id, int placedObjectIndex)
+    public void AddObject(Vector2Int cellPos, Vector2Int objectSize, int id, int placedObjectIndex)
     {
-        List<Vector3Int> positionToOccupy = CalculatePositions(cellPos, objectSize);
+        List<Vector2Int> positionToOccupy = CalculatePositions(cellPos, objectSize);
         PlacementData data = new PlacementData(positionToOccupy, id, placedObjectIndex);
         foreach (var pos in positionToOccupy)
         {
@@ -24,28 +24,26 @@ public class GridData
         }
     }
 
-    private List<Vector3Int> CalculatePositions(Vector3Int cellPos, Vector2Int objectSize)
+    private List<Vector2Int> CalculatePositions(Vector2Int cellPos, Vector2Int objectSize)
     {
-        List<Vector3Int> returnVal = new();
+        List<Vector2Int> returnVal = new();
         for (int x = 0; x < objectSize.x; x++)
         {
             for (int y = 0; y < objectSize.y; y++)
             {
-                returnVal.Add(cellPos + new Vector3Int(x, y));
+                returnVal.Add(cellPos + new Vector2Int(x, y));
             }
         }
 
         return returnVal;
     }
 
-    public bool CanPlaceObjectAt(Vector3Int cellPos, Vector2Int objectSize)
+    public bool CanPlaceObjectAt(Vector2Int cellPos, Vector2Int objectSize)
     {
-        //if outside of map return false
-        
-        List<Vector3Int> positionToOccupy = CalculatePositions(cellPos, objectSize);
+        List<Vector2Int> positionToOccupy = CalculatePositions(cellPos, objectSize);
         foreach (var pos in positionToOccupy)
         {
-            if (_placedObjects.ContainsKey(pos) || _floorTilemap.GetTile(pos) == null)
+            if (_placedObjects.ContainsKey(pos) || _floorTilemap.GetTile((Vector3Int)pos) == null)
             {
                 return false;
             }
@@ -53,14 +51,14 @@ public class GridData
         return true;
     }
 
-    public int GetRepresentationIndex(Vector3Int cellPos)
+    public int GetRepresentationIndex(Vector2Int cellPos)
     {
         if (_placedObjects.ContainsKey(cellPos))
             return _placedObjects[cellPos].placedObjectIndex;
         return -1;
     }
 
-    public void RemoveObjectAt(Vector3Int cellPos)
+    public void RemoveObjectAt(Vector2Int cellPos)
     {
         foreach (var pos in _placedObjects[cellPos].OccupiedCells)
         {
@@ -72,13 +70,30 @@ public class GridData
 
 public class PlacementData
 {
-    public readonly List<Vector3Int> OccupiedCells;
+    public readonly List<Vector2Int> OccupiedCells;
     public int id { get; set; }
     public int placedObjectIndex { get; set; }
-    public PlacementData(List<Vector3Int> occupiedCells, int id, int placedObjectIndex)
+    public PlacementData(List<Vector2Int> occupiedCells, int id, int placedObjectIndex)
     {
         this.OccupiedCells = occupiedCells;
         this.id = id;
         this.placedObjectIndex = placedObjectIndex;
+    }
+}
+
+[Serializable]
+public class Cell
+{
+    public Vector2Int pos;
+    public Vector2 worldPos;
+    public int gCost, hCost;
+    public Cell parent;
+    public int fCost => gCost + hCost;
+
+    public Cell(int x, int y)
+    {
+        pos.x = x;
+        pos.y = y;
+        worldPos = pos + (Vector2.one * 0.5f);
     }
 }

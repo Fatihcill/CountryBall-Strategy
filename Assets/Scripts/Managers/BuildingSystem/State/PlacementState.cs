@@ -7,14 +7,12 @@ public class PlacementState : IBuildingState
     private readonly ObjectPreviewData _selectedObject;
     private int _id;
     private readonly BuildingPlacer _buildingPlacer;    
-    private readonly GridData _gridData;
     private readonly CellIndicator _cellIndicator;
     
-    public PlacementState(int id, GridData gridData, ObjectsDatabaseManager objectsManager, BuildingPlacer buildingPlacer, CellIndicator cellIndicator)
+    public PlacementState(int id, ObjectsDatabaseManager objectsManager, BuildingPlacer buildingPlacer, CellIndicator cellIndicator)
     {
         this._id = id;
         this._buildingPlacer = buildingPlacer;
-        this._gridData = gridData;
         this._cellIndicator = cellIndicator;
         _selectedObject = objectsManager.GetObjectData(id);
         if (_selectedObject != null)
@@ -31,22 +29,22 @@ public class PlacementState : IBuildingState
         _cellIndicator.SetDefaultCell();
     }
 
-    public void OnAction(Vector3Int cellPos)
+    public void OnAction(Vector2Int cellPos)
     {
-        if (!_gridData.CanPlaceObjectAt(cellPos, _selectedObject.size)) return;
+        if (!Map.instance.IsCellOccupied(cellPos, _selectedObject.size)) return;
         
         int index = _buildingPlacer.PlaceBuilding(_selectedObject.prefab,
-            cellPos + _cellIndicator.cellOffset, _id, _selectedObject.type);
+            (Vector3Int)cellPos + _cellIndicator.cellOffset, _id, _selectedObject.type);
         if (index == -1) return;
-        _gridData.AddObject(cellPos,
+        Map.instance.gridData.AddObject(cellPos,
             _selectedObject.size,
             _selectedObject.id, 
             index);
     }
 
-    public void UpdateState(Vector3Int cellPos)
+    public void UpdateState(Vector2Int cellPos)
     {
-        _cellIndicator.UpdateState(_gridData.CanPlaceObjectAt(cellPos, _selectedObject.size)
+        _cellIndicator.UpdateState(Map.instance.IsCellOccupied(cellPos, _selectedObject.size)
             ? Color.green : Color.red);
     }
 }

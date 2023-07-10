@@ -12,16 +12,6 @@ public class Knight : Soldier
         this.damage = 10;
     }
 
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-    }
-    
     public override void Attack(Unit target)
     {
         // Attack implementation for Infantry

@@ -6,13 +6,11 @@ public class RemovingState : IBuildingState
 {
     private int _gameObjectIndex = -1;
     private BuildingPlacer _buildingPlacer;    
-    private GridData _gridData;
     private Sprite _defaultCell;
     private CellIndicator _cellIndicator;
-    public RemovingState(BuildingPlacer buildingPlacer, GridData gridData, CellIndicator cellIndicator)
+    public RemovingState(BuildingPlacer buildingPlacer, CellIndicator cellIndicator)
     {
         this._buildingPlacer = buildingPlacer;
-        this._gridData = gridData;
         this._cellIndicator = cellIndicator;
         _cellIndicator.SetDefaultCell();
     }
@@ -21,20 +19,20 @@ public class RemovingState : IBuildingState
         _cellIndicator.SetDefaultCell();
     }
 
-    public void OnAction(Vector3Int cellPos)
+    public void OnAction(Vector2Int cellPos)
     {
-        if (!_gridData.CanPlaceObjectAt(cellPos, Vector2Int.one))
+        if (!Map.instance.IsCellOccupied(cellPos, Vector2Int.one))
         {
-            _gameObjectIndex = _gridData.GetRepresentationIndex(cellPos);
+            _gameObjectIndex =Map.instance.gridData.GetRepresentationIndex(cellPos);
             if (_gameObjectIndex == -1)
                 return;
-            _gridData.RemoveObjectAt(cellPos);
+            Map.instance.gridData.RemoveObjectAt(cellPos);
             _buildingPlacer.RemoveBuildingAt(_gameObjectIndex);
         }
     }
 
-    public void UpdateState(Vector3Int cellPos)
+    public void UpdateState(Vector2Int cellPos)
     { 
-        _cellIndicator.UpdateState(_gridData.CanPlaceObjectAt(cellPos, Vector2Int.one) ? Color.yellow : Color.red);
+        _cellIndicator.UpdateState(Map.instance.IsCellOccupied(cellPos) ? Color.yellow : Color.red);
     }
 }

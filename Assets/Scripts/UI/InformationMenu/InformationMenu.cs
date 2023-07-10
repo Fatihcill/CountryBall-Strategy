@@ -14,7 +14,7 @@ public class InformationMenu: MonoBehaviour
         preview = transform.Find("Preview").GetComponent<Image>();
         info = transform.Find("Info").GetComponent<TextMeshProUGUI>();
         production = transform.Find("Production").gameObject;
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     public void ShowInformation(string objectName, Sprite objectPreview, string objectInfo, bool isProduce)

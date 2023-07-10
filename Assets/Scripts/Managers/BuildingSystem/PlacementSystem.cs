@@ -21,25 +21,23 @@ public class PlacementSystem : MonoBehaviour
     private void Update()
     {
         if (_buildingState != null)
-            _buildingState.UpdateState(map.cellIndicator.cellPos);
+            _buildingState.UpdateState(map.cellIndicator.currentCell.pos);
     }
     
     public void StartPlacement(int id)
     {
         StopPlacement();
-        _buildingState = new PlacementState(id, map.GridData, objectManager, buildingPlacer, map.cellIndicator);
+        _buildingState = new PlacementState(id, objectManager, buildingPlacer, map.cellIndicator);
         inputManager.OnClicked.AddListener(PlaceStructure);
         inputManager.OnExit.AddListener(StopPlacement);
-        InputManager.CurrentType = Type.PlaceActıon;
     }
 
     public void StartRemoving()
     {
         StopPlacement();
-        _buildingState = new RemovingState(buildingPlacer, map.GridData, map.cellIndicator);
+        _buildingState = new RemovingState(buildingPlacer, map.cellIndicator);
         inputManager.OnClicked.AddListener(PlaceStructure);
         inputManager.OnExit.AddListener(StopPlacement);
-        InputManager.CurrentType = Type.DeleteActıon;
     }
     
     public void StopPlacement()
@@ -49,13 +47,12 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnClicked.RemoveListener(PlaceStructure);
         inputManager.OnExit.RemoveListener(StopPlacement);
         _buildingState = null;
-        InputManager.CurrentType = Type.None;
     }
  
     [SerializeField] private void PlaceStructure()
     {
         if(inputManager.IsPointerOverUI()) return;
-        _buildingState.OnAction(map.cellIndicator.cellPos);
+        _buildingState.OnAction(map.cellIndicator.currentCell.pos);
         StopPlacement();
     }
 }

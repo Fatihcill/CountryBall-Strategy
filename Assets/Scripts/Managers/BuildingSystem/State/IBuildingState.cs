@@ -3,6 +3,6 @@
 public interface IBuildingState
 {
     void EndState();
-    void OnAction(Vector3Int cellPos);
-    void UpdateState(Vector3Int cellPos);
+    void OnAction(Vector2Int cellPos);
+    void UpdateState(Vector2Int cellPos);
 }

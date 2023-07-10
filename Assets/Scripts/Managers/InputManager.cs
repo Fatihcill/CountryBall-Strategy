@@ -5,18 +5,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public enum Type
-{
-    DeleteActıon,
-    PlaceActıon,
-    None
-}
 public class InputManager : MonoBehaviour
 {
-    public static Type CurrentType = Type.None;
     [SerializeField] private Camera sceneCamera;
     private Vector2 _lastPosition;
-    public UnityEvent OnClicked, OnExit;
+    public UnityEvent OnClicked, OnExit, OnAction, OnHideInfo;
     [SerializeField] protected InformationMenu informationMenu;
 
     public Vector2 GetSelectedMapPosition()
@@ -29,11 +22,16 @@ public class InputManager : MonoBehaviour
     public bool IsPointerOverUI() => EventSystem.current.IsPointerOverGameObject();
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             OnClicked?.Invoke();
+            OnHideInfo?.Invoke();
+            OnHideInfo?.RemoveAllListeners();
         }
-
+        if (Input.GetMouseButton(1))
+        {
+            OnAction?.Invoke();
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             OnExit?.Invoke();
