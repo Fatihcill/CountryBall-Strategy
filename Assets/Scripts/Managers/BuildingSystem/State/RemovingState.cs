@@ -5,12 +5,12 @@ using UnityEngine;
 public class RemovingState : IBuildingState
 {
     private int _gameObjectIndex = -1;
-    private BuildingPlacer _buildingPlacer;    
+    private ObjectPlacer _objectPlacer;    
     private Sprite _defaultCell;
     private CellIndicator _cellIndicator;
-    public RemovingState(BuildingPlacer buildingPlacer, CellIndicator cellIndicator)
+    public RemovingState(ObjectPlacer objectPlacer, CellIndicator cellIndicator)
     {
-        this._buildingPlacer = buildingPlacer;
+        this._objectPlacer = objectPlacer;
         this._cellIndicator = cellIndicator;
         _cellIndicator.SetDefaultCell();
     }
@@ -21,18 +21,18 @@ public class RemovingState : IBuildingState
 
     public void OnAction(Vector2Int cellPos)
     {
-        if (!Map.instance.IsCellOccupied(cellPos, Vector2Int.one))
+        if (!Map.Instance.IsCellOccupied(cellPos, Vector2Int.one))
         {
-            _gameObjectIndex =Map.instance.gridData.GetRepresentationIndex(cellPos);
+            _gameObjectIndex =Map.Instance.gridData.GetRepresentationIndex(cellPos);
             if (_gameObjectIndex == -1)
                 return;
-            Map.instance.gridData.RemoveObjectAt(cellPos);
-            _buildingPlacer.RemoveBuildingAt(_gameObjectIndex);
+            Map.Instance.gridData.RemoveObjectAt(cellPos);
+            _objectPlacer.RemoveObjectAt(_gameObjectIndex);
         }
     }
 
     public void UpdateState(Vector2Int cellPos)
     { 
-        _cellIndicator.UpdateState(Map.instance.IsCellOccupied(cellPos) ? Color.yellow : Color.red);
+        _cellIndicator.UpdateState(Map.Instance.IsCellOccupied(cellPos) ? Color.yellow : Color.red);
     }
 }

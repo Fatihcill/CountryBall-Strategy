@@ -7,20 +7,20 @@ public class CellIndicator : MonoBehaviour
     [SerializeField] private InputManager inputManager;
     private SpriteRenderer _spriteRenderer;
     private Sprite _defaultSprite;
-    private Vector3 _defaultCellOffset;
-    public Vector3 cellOffset;
+    private Vector2 _defaultCellOffset;
+    public Vector2 cellOffset;
     public Cell currentCell = new (0, 0);
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _defaultSprite = _spriteRenderer.sprite;
-        cellOffset = _defaultCellOffset = new Vector3(0.5f, 0.5f);
+        cellOffset = _defaultCellOffset = new Vector2(0.5f, 0.5f);
         currentCell.pos = Vector2Int.zero;
     }
 
     private void Update()
     {
-        UpdateCellPosition(inputManager.GetSelectedMapPosition());
+        transform.position = (Vector2)GetCellWorldPos(inputManager.GetSelectedMapPosition()) + cellOffset;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -29,12 +29,12 @@ public class CellIndicator : MonoBehaviour
         }
     }
 
-    private void UpdateCellPosition(Vector2 mousePosition)
+    public Vector2Int GetCellWorldPos(Vector2 pos)
     {
-        currentCell.pos.x = mousePosition.x >= 0 ? (int)(mousePosition.x) : (int)(mousePosition.x - 1);
-        currentCell.pos.y = mousePosition.y >= 0 ? (int)(mousePosition.y) : (int)(mousePosition.y - 1);
+        currentCell.pos.x = pos.x >= 0 ? (int)(pos.x) : (int)(pos.x - 1);
+        currentCell.pos.y = pos.y >= 0 ? (int)(pos.y) : (int)(pos.y - 1);
         
-        transform.position = (Vector3Int)currentCell.pos + cellOffset;
+        return currentCell.pos;
     }
 
     public void UpdateState(Color color)

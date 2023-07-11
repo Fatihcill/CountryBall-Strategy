@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
-class Map : MonoBehaviour
+public class Map : MonoBehaviour
 {
-    public static Map instance { get; private set; }
+    public static Map Instance;
     public GridData gridData;
     public Dictionary<Vector2Int, Cell> cellValues = new();
     private Tilemap _environment;
@@ -14,7 +14,7 @@ class Map : MonoBehaviour
     public Vector2Int currentPos;
     private void Awake()
     {
-        instance = this;
+        Instance = this;
         _environment = transform.Find("Grass").GetComponent<Tilemap>();
         cellIndicator = GetComponentInChildren<CellIndicator>();
         gridData = new GridData(_environment);

@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 public class PlacementSystem : MonoBehaviour
 {
     [SerializeField] private InputManager inputManager;
-    [SerializeField] private BuildingPlacer buildingPlacer;
+    [SerializeField] private ObjectPlacer objectPlacer;
     [SerializeField] Map map;
     private IBuildingState _buildingState;
     
@@ -25,15 +25,21 @@ public class PlacementSystem : MonoBehaviour
     public void StartPlacement(int id)
     {
         StopPlacement();
-        _buildingState = new PlacementState(id, buildingPlacer, map.cellIndicator);
+        _buildingState = new PlacementState(id, objectPlacer, map.cellIndicator);
         inputManager.OnClicked.AddListener(PlaceStructure);
         inputManager.OnExit.AddListener(StopPlacement);
     }
-
+    public void StartCreatingObject(int id, Vector2Int spawnPos)
+    {
+        StopPlacement();
+        _buildingState = new PlacementState(id, objectPlacer, map.cellIndicator);
+        _buildingState.OnAction(spawnPos);
+        StopPlacement();
+    }
     public void StartRemoving()
     {
         StopPlacement();
-        _buildingState = new RemovingState(buildingPlacer, map.cellIndicator);
+        _buildingState = new RemovingState(objectPlacer, map.cellIndicator);
         inputManager.OnClicked.AddListener(PlaceStructure);
         inputManager.OnExit.AddListener(StopPlacement);
     }
@@ -52,4 +58,7 @@ public class PlacementSystem : MonoBehaviour
         _buildingState.OnAction(map.cellIndicator.currentCell.pos);
         StopPlacement();
     }
+    
+
+
 }

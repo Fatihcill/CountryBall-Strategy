@@ -6,13 +6,13 @@ public class PlacementState : IBuildingState
 {
     private readonly ObjectPreviewData _selectedObject;
     private int _id;
-    private readonly BuildingPlacer _buildingPlacer;    
+    private readonly ObjectPlacer _objectPlacer;    
     private readonly CellIndicator _cellIndicator;
     
-    public PlacementState(int id, BuildingPlacer buildingPlacer, CellIndicator cellIndicator)
+    public PlacementState(int id, ObjectPlacer objectPlacer, CellIndicator cellIndicator)
     {
         this._id = id;
-        this._buildingPlacer = buildingPlacer;
+        this._objectPlacer = objectPlacer;
         this._cellIndicator = cellIndicator;
         _selectedObject = GameManager.Instance.database.GetObjectData(id);
         if (_selectedObject != null)
@@ -31,12 +31,12 @@ public class PlacementState : IBuildingState
 
     public void OnAction(Vector2Int cellPos)
     {
-        if (!Map.instance.IsCellOccupied(cellPos, _selectedObject.size)) return;
+        if (!Map.Instance.IsCellOccupied(cellPos, _selectedObject.size)) return;
         
-        int index = _buildingPlacer.PlaceBuilding(_selectedObject.prefab,
-            (Vector3Int)cellPos + _cellIndicator.cellOffset, _id, _selectedObject.type);
+        int index = _objectPlacer.PlaceObject(_selectedObject.prefab,
+            cellPos + _cellIndicator.cellOffset, _id, _selectedObject.type);
         if (index == -1) return;
-        Map.instance.gridData.AddObject(cellPos,
+        Map.Instance.gridData.AddObject(cellPos,
             _selectedObject.size,
             _selectedObject.id, 
             index);
@@ -44,7 +44,7 @@ public class PlacementState : IBuildingState
 
     public void UpdateState(Vector2Int cellPos)
     {
-        _cellIndicator.UpdateState(Map.instance.IsCellOccupied(cellPos, _selectedObject.size)
+        _cellIndicator.UpdateState(Map.Instance.IsCellOccupied(cellPos, _selectedObject.size)
             ? Color.green : Color.red);
     }
 }

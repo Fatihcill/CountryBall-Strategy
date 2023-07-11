@@ -20,7 +20,6 @@ public class ObjectsDatabaseManager : MonoBehaviour
                 throw new Exception("Unknown object type");
         }
     }
-
     public List<ObjectPreviewData> GetObjectByType(ObjectPreviewData.ObjectType type)
     {
         return type switch
@@ -34,5 +33,4 @@ public class ObjectsDatabaseManager : MonoBehaviour
     {
         return database.itemPreviewData.Find(item => item.id == id);
     }
-      
 }

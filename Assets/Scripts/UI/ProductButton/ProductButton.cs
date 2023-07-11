@@ -22,7 +22,7 @@ public class ProductButton : MonoBehaviour
     public void ProductionAction()
     {
         if (producter)
-            producter.ProduceSoldier(this.id);
+            producter.ProduceUnit(this.id);
         else
             Debug.LogWarning("Producer is null");
     }

@@ -37,7 +37,7 @@ public class Pathfinding : MonoBehaviour
             {   
                 // tile is occupied
 
-                if (Map.instance.IsCellOccupied(neighbourTile.pos) == false || closedSet.Contains(neighbourTile))
+                if (Map.Instance.IsCellOccupied(neighbourTile.pos) == false || closedSet.Contains(neighbourTile))
                     continue;
                 // get the neighbout tile having the least cost
                 int movementCost = current.gCost + GetDistance(current, neighbourTile);
@@ -74,7 +74,7 @@ public class Pathfinding : MonoBehaviour
                }
                int x  = i + currentTile.pos.x;
                int y = j + currentTile.pos.y;
-               neighbours.Add(Map.instance.GetNode(x, y));
+               neighbours.Add(Map.Instance.GetNode(x, y));
            }
        }
        return neighbours;
