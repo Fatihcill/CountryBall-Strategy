@@ -22,6 +22,8 @@ public class InputManager : MonoBehaviour
     public bool IsPointerOverUI() => EventSystem.current.IsPointerOverGameObject();
     private void Update()
     {
+        if (IsPointerOverUI()) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             OnClicked?.Invoke();
@@ -37,10 +39,10 @@ public class InputManager : MonoBehaviour
             OnExit?.Invoke();
         }
     }
-    public void ShowInformationMenu(string objectName, Sprite preview, string description, bool isProduce)
+    public void ShowInformationMenu(string objectName, Sprite preview, bool isProduce, Building building)
     {
         informationMenu.gameObject.SetActive(true);
-        informationMenu.ShowInformation(objectName, preview, description, isProduce);
+        informationMenu.ShowInformation(objectName, preview, isProduce, building);
     }
 
     public void HideInfo()

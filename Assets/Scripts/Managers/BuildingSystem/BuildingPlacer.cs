@@ -8,7 +8,6 @@ public class BuildingPlacer : MonoBehaviour
 {
     [SerializeField] private Transform parent;
     [SerializeField] private List<Building> placedBuildingObjects = new();
-    [SerializeField] private ObjectsDatabaseManager databaseManager;
     [SerializeField] private InputManager inputManager;
     [SerializeField] private ObjectPooling objectPool;
 
@@ -16,7 +15,7 @@ public class BuildingPlacer : MonoBehaviour
     {
         if (type != ObjectPreviewData.ObjectType.Building) return -1;
         Building newBuilding = objectPool.Create(prefab, parent).GetComponent<Building>();
-        newBuilding.SetBuilding(id, databaseManager, objectPool.pool);
+        newBuilding.SetBuilding(id, objectPool.pool);
         newBuilding.transform.position = pos;
         placedBuildingObjects.Add(newBuilding);
         return placedBuildingObjects.Count - 1;

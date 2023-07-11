@@ -912,7 +912,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 777f4b94c555450fb327105ab7bee4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellIndicator: {fileID: 0}
+  cellIndicator: {fileID: 1920883497}
+  currentPos: {x: 0, y: 0}
 --- !u!1 &6653899377963774676
 GameObject:
   m_ObjectHideFlags: 0
@@ -3168,4 +3169,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 0}
   cellOffset: {x: 0, y: 0, z: 0}
-  cellPos: {x: 0, y: 0, z: 0}
+  currentCell:
+    pos: {x: 0, y: 0}
+    worldPos: {x: 0.5, y: 0.5}
+    gCost: 0
+    hCost: 0

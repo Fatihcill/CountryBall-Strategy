@@ -7,8 +7,6 @@ using UnityEngine.Serialization;
 public abstract class Unit : MonoBehaviour
 {
     public int health;
-    [SerializeField] InputManager inputManager;
-    [SerializeField] Pathfinding pathfinding;
     private float _speed;
     private Cell _unityCell;   
     public List<Cell> pathVectorList;
@@ -18,7 +16,7 @@ public abstract class Unit : MonoBehaviour
     protected virtual void Awake()
     {
         currentPathIndex = 0;
-        _speed = 25;
+        _speed = 5;
         health = 10;
         _unityCell = new Cell(0, 0);
     }
@@ -36,14 +34,13 @@ public abstract class Unit : MonoBehaviour
     protected void OnMouseDown()
     {
         UpdateCellPosition(this.transform.position);
-        Debug.Log(_unityCell.pos);
-        inputManager.OnAction.AddListener(StartAction);
-        inputManager.OnExit.AddListener(StopAction);
+        GameManager.Instance.inputManager.OnAction.AddListener(StartAction);
+        GameManager.Instance.inputManager.OnExit.AddListener(StopAction);
     }
 
     public void SetTargetPosition() {
         currentPathIndex = 0;
-        pathVectorList = pathfinding.FindPath(_unityCell, Map.instance.cellIndicator.currentCell);
+        pathVectorList = GameManager.Instance.pathfinding.FindPath(_unityCell, Map.instance.cellIndicator.currentCell);
     }
 
     private void HandleMovement() {
@@ -70,8 +67,8 @@ public abstract class Unit : MonoBehaviour
     
     protected void StopAction()
     {
-        inputManager.OnAction.RemoveListener(StartAction);
-        inputManager.OnExit.RemoveListener(StopAction);
+        GameManager.Instance.inputManager.OnAction.RemoveListener(StartAction);
+        GameManager.Instance.inputManager.OnExit.RemoveListener(StopAction);
     }
 
 }

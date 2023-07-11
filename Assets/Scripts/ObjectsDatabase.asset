@@ -28,18 +28,18 @@ MonoBehaviour:
   - <name>k__BackingField: Knight
     <id>k__BackingField: 2
     <size>k__BackingField: {x: 1, y: 1}
-    <prefab>k__BackingField: {fileID: 6762123015225532281, guid: de6ac34a9676800428fbdd979650722e, type: 3}
+    <prefab>k__BackingField: {fileID: 3508151752404361857, guid: de6ac34a9676800428fbdd979650722e, type: 3}
     <preview>k__BackingField: {fileID: 21300000, guid: d8c9cd86b5abd7f499e08d719de4f299, type: 3}
     <type>k__BackingField: 1
-  - <name>k__BackingField: Archer
+  - <name>k__BackingField: Janissary
     <id>k__BackingField: 3
     <size>k__BackingField: {x: 1, y: 1}
-    <prefab>k__BackingField: {fileID: 6762123015225532281, guid: de6ac34a9676800428fbdd979650722e, type: 3}
-    <preview>k__BackingField: {fileID: 21300000, guid: d8c9cd86b5abd7f499e08d719de4f299, type: 3}
+    <prefab>k__BackingField: {fileID: 3435271924341909649, guid: 4ae45f687fb818d49a6600cde86f8dc4, type: 3}
+    <preview>k__BackingField: {fileID: 21300000, guid: df5b10241aebd1542ab82fef56d71c9e, type: 3}
     <type>k__BackingField: 1
-  - <name>k__BackingField: Scout
+  - <name>k__BackingField: SpearMan
     <id>k__BackingField: 4
     <size>k__BackingField: {x: 1, y: 1}
-    <prefab>k__BackingField: {fileID: 6762123015225532281, guid: de6ac34a9676800428fbdd979650722e, type: 3}
-    <preview>k__BackingField: {fileID: 21300000, guid: d8c9cd86b5abd7f499e08d719de4f299, type: 3}
+    <prefab>k__BackingField: {fileID: 5736676414496829665, guid: bbdc412fe1a78da44a3ecaad0dbd2783, type: 3}
+    <preview>k__BackingField: {fileID: 21300000, guid: d3e721eb98a9076458ad828831139a6a, type: 3}
     <type>k__BackingField: 1

@@ -46,7 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 0}
   placedBuildingObjects: []
-  databaseManager: {fileID: 0}
   inputManager: {fileID: 0}
   objectPool: {fileID: 0}
 --- !u!1 &5467184875743557709
@@ -96,5 +95,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 0}
   buildingPlacer: {fileID: 5467184875703019781}
-  objectManager: {fileID: 0}
   map: {fileID: 0}

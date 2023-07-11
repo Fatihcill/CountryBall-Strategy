@@ -5,15 +5,19 @@
 
     public class ProductScroll : MonoBehaviour
     {
+        public RectTransform content;
+        
         [SerializeField] List<GameObject> cloneItems = new();
         [SerializeField] GameObject [] items;
-        public RectTransform content;
+        [SerializeField] GameObject buildingButtonPrefab;
+        [SerializeField] ObjectPooling objectPool;
+        [SerializeField] UIManager uiManager;
+        
         private GridLayoutGroup _contentGridLayout;
         private RectTransform _rectTransform;
         private ScrollRect _scrollRect;
         private int _numberOfLine;
         private float _width;
-        [SerializeField] private ObjectPooling objectPool;
         
         private void Start()
         {
@@ -22,7 +26,10 @@
             _scrollRect = GetComponent<ScrollRect>();
             _rectTransform = GetComponent<RectTransform>();
             _contentGridLayout = content.GetComponent<GridLayoutGroup>();
-            _width = _contentGridLayout.cellSize.y + _contentGridLayout.spacing.y;
+            uiManager = transform.parent.GetComponent<UIManager>();
+            
+            items = uiManager.InitializeButtons(ObjectPreviewData.ObjectType.Building, buildingButtonPrefab, content);
+            _width = (_contentGridLayout.cellSize.y + _contentGridLayout.spacing.y * ((items.Length % 2) + 1));
             _numberOfLine = (int) (_rectTransform.rect.height / _width);
             for (int j = 0; j < (_numberOfLine * 2); j++)
             {
@@ -32,7 +39,7 @@
                 }            
             }
         }
-
+        
         private void InstantiateItem()
         {
             for (int i = 0; i < items.Length; i++)
@@ -44,7 +51,7 @@
         private void MoveContent()
         {
             var position = content.position;
-            position = new Vector3(position.x, position.y + (_width * _numberOfLine) , position.z);
+            position = new Vector3(position.x, position.y + (_width * (_numberOfLine - 1)) , position.z);
             content.position = position;
         }
 

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,22 +7,37 @@ public class InformationMenu: MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField]private Image preview;
-    [SerializeField]private TextMeshProUGUI info;
     [SerializeField]private GameObject production;
+    [SerializeField]private GameObject []productionButtons;
+    [SerializeField]private GameObject buttonPrefab;
+    [SerializeField]private UIManager uiManager;
     private void Awake()
     {
         itemName = transform.Find("Name").GetComponent<TextMeshProUGUI>();
         preview = transform.Find("Preview").GetComponent<Image>();
-        info = transform.Find("Info").GetComponent<TextMeshProUGUI>();
         production = transform.Find("Production").gameObject;
-        //gameObject.SetActive(false);
+        uiManager = transform.parent.GetComponent<UIManager>();
+
+        productionButtons = uiManager.InitializeButtons(ObjectPreviewData.ObjectType.Unit, buttonPrefab, production.transform);
+        gameObject.SetActive(false);
     }
 
-    public void ShowInformation(string objectName, Sprite objectPreview, string objectInfo, bool isProduce)
+    private void Start()
+    {
+               
+    }
+
+    public void ShowInformation(string objectName, Sprite objectPreview, bool isProduce, Building building = null)
     {
         itemName.text = objectName;
         preview.sprite = objectPreview;
-        info.text = objectInfo;
         production.SetActive(isProduce);
+        if (isProduce)
+        {
+            foreach (var button in productionButtons)
+            {
+                button.GetComponent<ProductButton>().producter = building;
+            }
+        }
     }
 }

@@ -5,29 +5,37 @@ using UnityEngine;
 
 public class Barracks : Building
 {
-    Transform spawnLocation;
+    private Transform _spawnLocation;
+    private ObjectPreviewData.ObjectType _productType;
+
     protected override void Awake()
     {
         base.Awake();
-        spawnLocation = transform.GetChild(0);
+        _spawnLocation = transform.GetChild(0);
         this.health = 100;
-        this.IsProduce = true;
-        spawnLocation.GetComponent<SpriteRenderer>().color = Color.clear;
+        this.isProduce = true;
+        _spawnLocation.GetComponent<SpriteRenderer>().color = Color.clear;
     }
     
-    public void ProduceSoldier(int soldierType)
+    public override void ProduceSoldier(int soldierType)
     {
-        // TODO: Implement soldier production logic based on the soldierType
+        base.ProduceSoldier(soldierType);
+        //Implement soldier production logic based on the soldierType
+        //For now, we just spawn a soldier at the spawn location
+        ObjectPreviewData soldier = GameManager.Instance.database.GetObjectData(soldierType);
+        GameObject Unit = Instantiate(soldier.prefab);
+        Unit.transform.position = _spawnLocation.transform.position;
+        //ObjectPool.Get(soldier.prefab);
     }
     protected override void OnInfo()
     {
         base.OnInfo();
-        spawnLocation.GetComponent<SpriteRenderer>().color = Color.white;
+        _spawnLocation.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     protected override void OnHide()
     {
         base.OnHide();
-        spawnLocation.GetComponent<SpriteRenderer>().color = Color.clear;
+        _spawnLocation.GetComponent<SpriteRenderer>().color = Color.clear;
     }
 }

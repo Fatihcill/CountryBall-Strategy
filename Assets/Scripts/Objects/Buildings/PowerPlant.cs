@@ -9,7 +9,7 @@ public class PowerPlant : Building
     {
         base.Awake();
         this.health = 50;
-        this.IsProduce = false;
+        this.isProduce = false;
     }
     
     protected override void OnInfo()

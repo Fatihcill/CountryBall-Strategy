@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-//todo Refactor this class
 public class PlacementSystem : MonoBehaviour
 {
     [SerializeField] private InputManager inputManager;
     [SerializeField] private BuildingPlacer buildingPlacer;
-    [SerializeField] private ObjectsDatabaseManager objectManager;
     [SerializeField] Map map;
     private IBuildingState _buildingState;
     
@@ -27,7 +25,7 @@ public class PlacementSystem : MonoBehaviour
     public void StartPlacement(int id)
     {
         StopPlacement();
-        _buildingState = new PlacementState(id, objectManager, buildingPlacer, map.cellIndicator);
+        _buildingState = new PlacementState(id, buildingPlacer, map.cellIndicator);
         inputManager.OnClicked.AddListener(PlaceStructure);
         inputManager.OnExit.AddListener(StopPlacement);
     }
@@ -49,9 +47,8 @@ public class PlacementSystem : MonoBehaviour
         _buildingState = null;
     }
  
-    [SerializeField] private void PlaceStructure()
+    private void PlaceStructure()
     {
-        if(inputManager.IsPointerOverUI()) return;
         _buildingState.OnAction(map.cellIndicator.currentCell.pos);
         StopPlacement();
     }

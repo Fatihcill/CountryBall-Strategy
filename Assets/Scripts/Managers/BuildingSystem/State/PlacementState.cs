@@ -9,12 +9,12 @@ public class PlacementState : IBuildingState
     private readonly BuildingPlacer _buildingPlacer;    
     private readonly CellIndicator _cellIndicator;
     
-    public PlacementState(int id, ObjectsDatabaseManager objectsManager, BuildingPlacer buildingPlacer, CellIndicator cellIndicator)
+    public PlacementState(int id, BuildingPlacer buildingPlacer, CellIndicator cellIndicator)
     {
         this._id = id;
         this._buildingPlacer = buildingPlacer;
         this._cellIndicator = cellIndicator;
-        _selectedObject = objectsManager.GetObjectData(id);
+        _selectedObject = GameManager.Instance.database.GetObjectData(id);
         if (_selectedObject != null)
         {
             cellIndicator.StartPlacement(_selectedObject.preview,
