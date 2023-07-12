@@ -32,18 +32,9 @@ public abstract class Building : ObjectModel
         GameManager.Instance.inputManager.HideInfo();
         isClicked = false;
     }
-    
-    
+
     public virtual void ProduceUnit(int soldierType)
     {
         if (!isProduce) return;
-    }
-    public void TakeDamage(int amount)
-    {
-        this.health -= amount;
-        if (this.health <= 0)
-        {
-            Die();
-        }
     }
 }

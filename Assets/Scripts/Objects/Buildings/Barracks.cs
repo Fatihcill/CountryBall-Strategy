@@ -19,20 +19,11 @@ public class Barracks : Building
     {
         base.ProduceUnit(soldierType);
         ObjectPreviewData unitData = GameManager.Instance.database.GetObjectData(soldierType);
-        Vector2Int unitPos = Map.Instance.cellIndicator.GetCellWorldPos(_spawnLocation.transform.position);
+        Vector2Int unitPos = Vector2Int.FloorToInt(_spawnLocation.transform.position);
         GameManager.Instance.placementSystem.StartCreatingObject(soldierType, unitPos);
-        /*if(Map.Instance.IsCellOccupied(unitPos, unitData.size))
-        {
-            Map.Instance.gridData.AddObject(unitPos, unitData.size, unitData.id);
-            
-            Unit unit = Instantiate(unitData.prefab).GetComponent<Unit>();
-            unit.SetObject();
-            unit.transform.position = _spawnLocation.transform.position;
-        }*/
-        //ObjectPool.Get(soldier.prefab);
     }
 
-    private void Move()
+    private void MoveSpawnPoint()
     {
         _spawnLocation.transform.position = (Vector2)Map.Instance.currentPos + _spawnOffset;
     }
@@ -41,14 +32,14 @@ public class Barracks : Building
     {
         base.OnInfo();
         GameManager.Instance.inputManager.OnAction.RemoveAllListeners();
-        GameManager.Instance.inputManager.OnAction.AddListener(Move);
+        GameManager.Instance.inputManager.OnAction.AddListener(MoveSpawnPoint);
         _spawnLocation.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     protected override void OnHide()
     {
         base.OnHide();
-        GameManager.Instance.inputManager.OnAction.RemoveListener(Move);
+        GameManager.Instance.inputManager.OnAction.RemoveListener(MoveSpawnPoint);
         _spawnLocation.GetComponent<SpriteRenderer>().color = Color.clear;
     }
 }

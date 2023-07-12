@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
-using UnityEngine.Serialization;
+
 
 public class ObjectPlacer : MonoBehaviour
 {
     [SerializeField] private Transform parent;
     [SerializeField] private List<ObjectModel> placedObjects = new();
-    [SerializeField] private InputManager inputManager;
     [SerializeField] private ObjectPooling objectPool;
 
     public int PlaceObject(GameObject prefab, Vector3 pos, int id, ObjectPreviewData.ObjectType type)

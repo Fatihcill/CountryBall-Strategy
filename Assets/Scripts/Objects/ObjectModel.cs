@@ -19,4 +19,13 @@ public class ObjectModel : MonoBehaviour
     public void Die() {
         ObjectPool.Release(this.gameObject);
     }
+    
+    public void TakeDamage(int amount)
+    {
+        this.health -= amount;
+        if (this.health <= 0)
+        {
+            Die();
+        }
+    }
 }

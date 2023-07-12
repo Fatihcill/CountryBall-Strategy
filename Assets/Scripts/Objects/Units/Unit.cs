@@ -6,19 +6,20 @@ using UnityEngine.Serialization;
 
 public abstract class Unit : ObjectModel
 {
-    private float _speed;
+    protected float Speed;
     public Cell unitCell;   
     public List<Cell> pathVectorList;
     private int _currentPathIndex;
     private bool _changedPos;
-    public abstract void TakeDamage(int amount);
+    
     protected virtual void Awake()
     {
         _currentPathIndex = 0;
-        _speed = 5;
+        Speed = 5;
         health = 10;
         unitCell = new Cell(0, 0);
     }
+    
     protected virtual void Update()
     {
         HandleMovement();
@@ -26,14 +27,16 @@ public abstract class Unit : ObjectModel
     
     protected void OnMouseDown()
     {
-        unitCell.pos = Map.Instance.cellIndicator.GetCellWorldPos(transform.position);
+        unitCell.pos = Vector2Int.FloorToInt(transform.position);
         GameManager.Instance.inputManager.OnAction.AddListener(StartAction);
         GameManager.Instance.inputManager.OnExit.AddListener(StopAction);
     }
 
+    private Cell target = new(0, 0);
     public void SetTargetPosition() {
         _currentPathIndex = 0;
-        pathVectorList = GameManager.Instance.pathfinding.FindPath(unitCell, Map.Instance.cellIndicator.currentCell);
+        target.pos = Map.Instance.cellIndicator.currentCell.pos;
+        pathVectorList = GameManager.Instance.pathfinding.FindPath(unitCell, target);
     }
 
     private void HandleMovement() {
@@ -42,7 +45,7 @@ public abstract class Unit : ObjectModel
             Vector3 targetPosition = pathVectorList[_currentPathIndex].worldPos;
             if (Vector3.Distance(transform.position, targetPosition) > 0.1f) {
                 Vector3 moveDir = (targetPosition - transform.position).normalized;
-                transform.position += moveDir * _speed * Time.deltaTime;
+                transform.position += moveDir * Speed * Time.deltaTime;
             } else {
                 _currentPathIndex++;
                 UpdatePos(pathVectorList[_currentPathIndex - 1].pos);
@@ -56,13 +59,16 @@ public abstract class Unit : ObjectModel
 
     private void UpdatePos(Vector2Int currentPos)
     {
+        int placedObjectIndex = Map.Instance.gridData.GetRepresentationIndex(unitCell.pos);
         Map.Instance.gridData.RemoveObjectAt(unitCell.pos);
-        Map.Instance.gridData.AddObject(currentPos, ObjectData.size, ObjectData.id);
+        Map.Instance.gridData.AddObject(currentPos, ObjectData.size, ObjectData.id, placedObjectIndex);
         unitCell.pos = currentPos;
     }
+    
     protected void StartAction()
     {
         SetTargetPosition();
+        StopAction();
     }
     
     protected void StopAction()
@@ -70,5 +76,4 @@ public abstract class Unit : ObjectModel
         GameManager.Instance.inputManager.OnAction.RemoveListener(StartAction);
         GameManager.Instance.inputManager.OnExit.RemoveListener(StopAction);
     }
-
 }

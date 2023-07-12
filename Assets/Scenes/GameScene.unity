@@ -1244,17 +1244,6 @@ Transform:
   m_Father: {fileID: 2030580908}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1619461294 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1920883497, guid: 94172abd0bd2bae4d92dddeef2baa07c, type: 3}
-  m_PrefabInstance: {fileID: 8570197451569897665}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed683a4122c64f328bed541e0efb1719, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1679423576
 GameObject:
   m_ObjectHideFlags: 0
@@ -2291,14 +2280,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1315294889, guid: 94172abd0bd2bae4d92dddeef2baa07c, type: 3}
-      propertyPath: inputManager
-      value: 
-      objectReference: {fileID: 428304307}
-    - target: {fileID: 1315294889, guid: 94172abd0bd2bae4d92dddeef2baa07c, type: 3}
-      propertyPath: cellIndicator
-      value: 
-      objectReference: {fileID: 1619461294}
     - target: {fileID: 1595519548, guid: 94172abd0bd2bae4d92dddeef2baa07c, type: 3}
       propertyPath: m_TileAssetArray.Array.data[10].m_Data
       value: 
@@ -2310,10 +2291,6 @@ PrefabInstance:
     - target: {fileID: 6301235447493724363, guid: 94172abd0bd2bae4d92dddeef2baa07c, type: 3}
       propertyPath: m_Name
       value: Map
-      objectReference: {fileID: 0}
-    - target: {fileID: 6653899377963774676, guid: 94172abd0bd2bae4d92dddeef2baa07c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8042706982098034646, guid: 94172abd0bd2bae4d92dddeef2baa07c, type: 3}
       propertyPath: m_TileAssetArray.Array.data[10].m_Data

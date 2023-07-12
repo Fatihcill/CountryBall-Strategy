@@ -9,10 +9,4 @@ public class Spearman : Soldier
         base.Awake();
         this.damage = 2;
     }
-    public override void Attack(Unit target)
-    {
-        // Attack implementation for Infantry
-    }
-
-    // Other methods and properties unique to Infantry...
 }

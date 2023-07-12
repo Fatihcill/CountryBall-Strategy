@@ -8,7 +8,6 @@ public class ObjectsDatabase : ScriptableObject
     public List<ObjectPreviewData> itemPreviewData;
 }
 
-
 [Serializable]
 public class ObjectPreviewData
 {

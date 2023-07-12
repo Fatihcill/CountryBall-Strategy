@@ -4,6 +4,23 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
+    private Vector2Int FindBlockedTarget(Vector2Int startPos, Vector2Int targetPos)
+    {
+        if (!Map.Instance.IsCellOccupied(targetPos, Vector2Int.one))
+        {
+            Vector2 direction = startPos - targetPos;
+            Vector2Int adjustedTargetPos = Vector2Int.zero;
+            for (int i = 1; i <= Mathf.Max(Mathf.Abs(direction.x), Mathf.Abs(direction.y)); i++)
+            {
+                Vector2 offset = direction.normalized * i;
+                adjustedTargetPos = targetPos +  Vector2Int.FloorToInt(offset);
+                if (Map.Instance.IsCellOccupied(adjustedTargetPos, Vector2Int.one) || adjustedTargetPos == startPos)
+                    return adjustedTargetPos;
+            }
+        }
+        return targetPos;
+    }
+    
     public List<Cell> FindPath(Cell source, Cell destination)
     {
         int i = 100;
@@ -11,7 +28,7 @@ public class Pathfinding : MonoBehaviour
         List<Cell> openSet = new();
         HashSet<Cell> closedSet = new();
         openSet.Add(source);
-        
+        destination.pos = FindBlockedTarget(source.pos, destination.pos);
         while(openSet.Count > 0 && --i > 0)
         {
             current = openSet[0];
@@ -27,19 +44,14 @@ public class Pathfinding : MonoBehaviour
             openSet.Remove(current);
             closedSet.Add(current);
             
-            // end
             if(current.pos == destination.pos)
             {
                 return GetPath(source, current);
             }
-            // examine each neighbour
             foreach(Cell neighbourTile in GetNeighbourTiles(current))
             {   
-                // tile is occupied
-
                 if (Map.Instance.IsCellOccupied(neighbourTile.pos) == false || closedSet.Contains(neighbourTile))
                     continue;
-                // get the neighbout tile having the least cost
                 int movementCost = current.gCost + GetDistance(current, neighbourTile);
                 if( movementCost < neighbourTile.gCost || !openSet.Contains(neighbourTile))
                 {
@@ -58,8 +70,9 @@ public class Pathfinding : MonoBehaviour
         }
         return null;
     }
-   private List<Cell> GetNeighbourTiles(Cell currentTile)
-   {
+
+    private List<Cell> GetNeighbourTiles(Cell currentTile)
+    {
 
        List<Cell> neighbours = new List<Cell>();
 
@@ -78,10 +91,10 @@ public class Pathfinding : MonoBehaviour
            }
        }
        return neighbours;
-   }
+    }
        
-   private List<Cell> GetPath(Cell sourceTile, Cell destinationTile)
-   {
+    private List<Cell> GetPath(Cell sourceTile, Cell destinationTile)
+    {
        List<Cell> path = new();
        Cell current = destinationTile;
 
@@ -92,10 +105,10 @@ public class Pathfinding : MonoBehaviour
        }
        path.Reverse();
        return path;
-   }
-   
-   private int GetDistance(Cell currentTile, Cell nextTile)
-   {   
+    }
+
+    private int GetDistance(Cell currentTile, Cell nextTile)
+    {   
        int xDistance = Mathf.Abs(currentTile.pos.x - nextTile.pos.x);
        int yDistance = Mathf.Abs(currentTile.pos.y - nextTile.pos.y);
 
@@ -104,5 +117,5 @@ public class Pathfinding : MonoBehaviour
            return 14 * yDistance + 10 * (xDistance - yDistance);
        }
        return 14 * xDistance + 10 * ( yDistance - xDistance);
-   }
+    } 
 }

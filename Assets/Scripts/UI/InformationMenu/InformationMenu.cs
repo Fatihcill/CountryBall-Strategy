@@ -22,11 +22,6 @@ public class InformationMenu: MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void Start()
-    {
-               
-    }
-
     public void ShowInformation(string objectName, Sprite objectPreview, bool isProduce, Building building = null)
     {
         itemName.text = objectName;
@@ -36,7 +31,7 @@ public class InformationMenu: MonoBehaviour
         {
             foreach (var button in productionButtons)
             {
-                button.GetComponent<ProductButton>().producter = building;
+                button.GetComponent<ProductButton>().producer = building;
             }
         }
     }

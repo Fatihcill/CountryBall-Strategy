@@ -11,14 +11,4 @@ public class PowerPlant : Building
         this.health = 50;
         this.isProduce = false;
     }
-    
-    protected override void OnInfo()
-    {
-        base.OnInfo();
-    }
-
-    protected override void OnHide()
-    {
-        base.OnHide();
-    }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class RemovingState : IBuildingState
 {
     private int _gameObjectIndex = -1;
-    private ObjectPlacer _objectPlacer;    
+    private readonly ObjectPlacer _objectPlacer;    
     private Sprite _defaultCell;
-    private CellIndicator _cellIndicator;
+    private readonly CellIndicator _cellIndicator;
     public RemovingState(ObjectPlacer objectPlacer, CellIndicator cellIndicator)
     {
         this._objectPlacer = objectPlacer;

@@ -20,23 +20,10 @@ public class CellIndicator : MonoBehaviour
 
     private void Update()
     {
-        transform.position = (Vector2)GetCellWorldPos(inputManager.GetSelectedMapPosition()) + cellOffset;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            inputManager.OnClicked.RemoveAllListeners();
-            inputManager.OnExit.RemoveAllListeners();
-        }
+        currentCell.pos = Vector2Int.FloorToInt(inputManager.GetSelectedMapPosition());
+        transform.position =  currentCell.pos + cellOffset;
     }
-
-    public Vector2Int GetCellWorldPos(Vector2 pos)
-    {
-        currentCell.pos.x = pos.x >= 0 ? (int)(pos.x) : (int)(pos.x - 1);
-        currentCell.pos.y = pos.y >= 0 ? (int)(pos.y) : (int)(pos.y - 1);
-        
-        return currentCell.pos;
-    }
-
+    
     public void UpdateState(Color color)
     {
         _spriteRenderer.color = color;

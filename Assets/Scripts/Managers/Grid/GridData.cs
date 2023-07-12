@@ -12,11 +12,10 @@ public class GridData
     {
         _floorTilemap = tilemap;
     }
-    public void AddObject(Vector2Int cellPos, Vector2Int objectSize, int id, int placedObjectIndex = 0)
+    public void AddObject(Vector2Int cellPos, Vector2Int objectSize, int id, int placedObjectIndex)
     {
         List<Vector2Int> positionToOccupy = CalculatePositions(cellPos, objectSize);
         PlacementData data = new PlacementData(positionToOccupy, id, placedObjectIndex);
-        Debug.Log(placedObjectIndex);
         foreach (var pos in positionToOccupy)
         {
             if (_placedObjects.ContainsKey(pos))

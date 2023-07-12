@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ProductButton : MonoBehaviour
 {
-    public Building producter;
+    public Building producer;
     public int id;
     public void SetButton(int id, Sprite preview, string text)
     {
@@ -21,8 +21,8 @@ public class ProductButton : MonoBehaviour
     
     public void ProductionAction()
     {
-        if (producter)
-            producter.ProduceUnit(this.id);
+        if (producer)
+            producer.ProduceUnit(this.id);
         else
             Debug.LogWarning("Producer is null");
     }
