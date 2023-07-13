@@ -6,7 +6,7 @@ public class Pathfinding : MonoBehaviour
 {
     private Vector2Int FindBlockedTarget(Vector2Int startPos, Vector2Int targetPos)
     {
-        if (!Map.Instance.IsCellOccupied(targetPos, Vector2Int.one))
+        if (!Map.Instance.IsCellAvailable(targetPos, Vector2Int.one))
         {
             Vector2 direction = startPos - targetPos;
             Vector2Int adjustedTargetPos = Vector2Int.zero;
@@ -14,7 +14,7 @@ public class Pathfinding : MonoBehaviour
             {
                 Vector2 offset = direction.normalized * i;
                 adjustedTargetPos = targetPos +  Vector2Int.FloorToInt(offset);
-                if (Map.Instance.IsCellOccupied(adjustedTargetPos, Vector2Int.one) || adjustedTargetPos == startPos)
+                if (Map.Instance.IsCellAvailable(adjustedTargetPos, Vector2Int.one) || adjustedTargetPos == startPos)
                     return adjustedTargetPos;
             }
         }
@@ -50,7 +50,7 @@ public class Pathfinding : MonoBehaviour
             }
             foreach(Cell neighbourTile in GetNeighbourTiles(current))
             {   
-                if (Map.Instance.IsCellOccupied(neighbourTile.pos) == false || closedSet.Contains(neighbourTile))
+                if (Map.Instance.IsCellAvailable(neighbourTile.pos) == false || closedSet.Contains(neighbourTile))
                     continue;
                 int movementCost = current.gCost + GetDistance(current, neighbourTile);
                 if( movementCost < neighbourTile.gCost || !openSet.Contains(neighbourTile))
@@ -73,8 +73,7 @@ public class Pathfinding : MonoBehaviour
 
     private List<Cell> GetNeighbourTiles(Cell currentTile)
     {
-
-       List<Cell> neighbours = new List<Cell>();
+        List<Cell> neighbours = new List<Cell>();
 
        for( int i = -1; i <= 1; i++)
        {

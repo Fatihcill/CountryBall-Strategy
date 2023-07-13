@@ -6,22 +6,29 @@ public class ObjectPlacer : MonoBehaviour
 {
     [SerializeField] private Transform parent;
     [SerializeField] private List<ObjectModel> placedObjects = new();
-    [SerializeField] private ObjectPooling objectPool;
-
-    public int PlaceObject(GameObject prefab, Vector3 pos, int id, ObjectPreviewData.ObjectType type)
+    [SerializeField] private Transform pfHealthBar;
+    
+    public int PlaceObject(GameObject prefab, Vector3 pos, int id)
     {
-        ObjectModel objectModel = objectPool.Create(prefab, parent).GetComponent<ObjectModel>();
-        objectModel.SetObject(id, objectPool.pool);
+        ObjectModel objectModel = Instantiate(prefab, parent).GetComponent<ObjectModel>();
+        objectModel.SetObject(id, pfHealthBar, placedObjects.Count);
         objectModel.transform.position = pos;
         placedObjects.Add(objectModel);
         return placedObjects.Count - 1;
     }
  
-    public void RemoveObjectAt(int gameObjectIndex)
+    public void DestroyObjectAt(int gameObjectIndex)
     {
         if (placedObjects.Count <= gameObjectIndex) return;
-        placedObjects[gameObjectIndex].Die();
+        placedObjects[gameObjectIndex].DestroyObject();
         placedObjects[gameObjectIndex] = null;
+    }
+
+    public ObjectModel GetPlacedObject(int gameObjectIndex)
+    {
+        if (gameObjectIndex == -1)
+            return null;
+        return placedObjects[gameObjectIndex];
     }
 }
 

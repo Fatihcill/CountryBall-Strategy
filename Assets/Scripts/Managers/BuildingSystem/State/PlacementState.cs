@@ -31,10 +31,10 @@ public class PlacementState : IBuildingState
 
     public void OnAction(Vector2Int cellPos)
     {
-        if (!Map.Instance.IsCellOccupied(cellPos, _selectedObject.size)) return;
+        if (!Map.Instance.IsCellAvailable(cellPos, _selectedObject.size)) return;
         
         int index = _objectPlacer.PlaceObject(_selectedObject.prefab,
-            cellPos + _cellIndicator.cellOffset, _id, _selectedObject.type);
+            cellPos + _cellIndicator.cellOffset, _id);
         if (index == -1) return;
         Map.Instance.gridData.AddObject(cellPos,
             _selectedObject.size,
@@ -44,7 +44,7 @@ public class PlacementState : IBuildingState
 
     public void UpdateState(Vector2Int cellPos)
     {
-        _cellIndicator.UpdateState(Map.Instance.IsCellOccupied(cellPos, _selectedObject.size)
+        _cellIndicator.UpdatePlacementState(Map.Instance.IsCellAvailable(cellPos, _selectedObject.size)
             ? Color.green : Color.red);
     }
 }

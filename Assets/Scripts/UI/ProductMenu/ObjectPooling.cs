@@ -4,10 +4,11 @@ using UnityEngine.Serialization;
 
 public class ObjectPooling : MonoBehaviour
 {
+    private Transform _parent;
     private GameObject _prefab;
-    private Transform _parent; 
     public IObjectPool<GameObject> pool;
     [SerializeField] private Transform defaultParent;
+    
     private void Awake() {
         pool = new ObjectPool<GameObject>(
             CreateObject,
@@ -16,32 +17,32 @@ public class ObjectPooling : MonoBehaviour
             OnDie,
             maxSize: 100
         );
-        _parent = defaultParent;
     }
+    
     private GameObject CreateObject()
     {
         return Instantiate(_prefab, _parent);
     }
 
-    private void OnGet(GameObject building)
+    private void OnGet(GameObject poolObject)
     {
-        building.gameObject.SetActive(true);
-        building.transform.position = transform.position; 
+        poolObject.gameObject.SetActive(true);
+        poolObject.transform.position = transform.position; 
     }
 
-    private void OnRelease(GameObject building)
+    private void OnRelease(GameObject poolObject)
     {
-        building.gameObject.SetActive(false);
+        poolObject.gameObject.SetActive(false);
     }
 
-    private void OnDie(GameObject building)
+    private void OnDie(GameObject poolObject)
     {
-        Destroy(building.gameObject);
+        Destroy(poolObject.gameObject);
     }
 
     public GameObject Create(GameObject prefab, Transform parent = null)
     {
-        _parent = parent == null ? defaultParent : parent;
+        _parent = parent == null ? this.transform : parent;
         _prefab = prefab;
         return pool.Get();
     }

@@ -1,31 +1,45 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.Serialization;
 
 public class ObjectModel : MonoBehaviour
 {
-    public int health;
+    protected bool IsImmortal;
+    protected int MaxHealth;
     protected ObjectPreviewData ObjectData;
-    protected IObjectPool<GameObject> ObjectPool;
-    
-    public void SetObject(int id, IObjectPool<GameObject> pool)
+    private HealthSystem _healthSystem;
+    public int placedObjectIndex;
+    public void SetObject(int id, Transform pfHealthBar, int index)
     {
+        if (!IsImmortal)
+        {
+            _healthSystem = new HealthSystem(MaxHealth);
+            Transform newHealthBar = Instantiate(pfHealthBar, transform);
+            HealthBar healthBar =  newHealthBar.GetComponent<HealthBar>();
+            healthBar.Setup(_healthSystem);
+        }
+        placedObjectIndex = index;
         ObjectData = GameManager.Instance.database.GetObjectData(id);
-        ObjectPool = pool;
         if (ObjectData == null)
             throw new Exception("Object can't access the database");
     }
     
-    public void Die() {
-        ObjectPool.Release(this.gameObject);
+    public virtual void DestroyObject() 
+    {
+        Destroy(this.gameObject);
     }
     
-    public void TakeDamage(int amount)
+    
+    public virtual void TakeDamage(int amount)
     {
-        this.health -= amount;
-        if (this.health <= 0)
+        if (IsImmortal) return;
+        _healthSystem.Damage(amount);
+        if (_healthSystem.GetHealth() <= 0)
         {
-            Die();
+            Map.Instance.gridData.RemoveObject(placedObjectIndex);
+            GameManager.Instance.placementSystem.objectPlacer.DestroyObjectAt(placedObjectIndex);
         }
     }
+    
 }

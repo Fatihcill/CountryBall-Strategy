@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 5467184875703019802}
   - component: {fileID: 5467184875703019781}
   m_Layer: 0
-  m_Name: BuildingPlacer
+  m_Name: ObjectPlacer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!4 &5467184875703019802
 Transform:
@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 0}
-  placedBuildingObjects: []
-  inputManager: {fileID: 0}
+  placedObjects: []
   objectPool: {fileID: 0}
+  pfHealthBar: {fileID: 8174001906812520212, guid: f53975465bea2014882a48bb894c31b7, type: 3}
 --- !u!1 &5467184875743557709
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!4 &5467184875743557708
 Transform:
@@ -94,5 +94,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 0}
-  buildingPlacer: {fileID: 5467184875703019781}
+  objectPlacer: {fileID: 5467184875703019781}
   map: {fileID: 0}

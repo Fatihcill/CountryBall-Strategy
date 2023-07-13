@@ -21,18 +21,18 @@ public class RemovingState : IBuildingState
 
     public void OnAction(Vector2Int cellPos)
     {
-        if (!Map.Instance.IsCellOccupied(cellPos, Vector2Int.one))
+        if (!Map.Instance.IsCellAvailable(cellPos, Vector2Int.one))
         {
             _gameObjectIndex =Map.Instance.gridData.GetRepresentationIndex(cellPos);
             if (_gameObjectIndex == -1)
                 return;
             Map.Instance.gridData.RemoveObjectAt(cellPos);
-            _objectPlacer.RemoveObjectAt(_gameObjectIndex);
+            _objectPlacer.DestroyObjectAt(_gameObjectIndex);
         }
     }
 
     public void UpdateState(Vector2Int cellPos)
     { 
-        _cellIndicator.UpdateState(Map.Instance.IsCellOccupied(cellPos) ? Color.yellow : Color.red);
+        _cellIndicator.UpdatePlacementState(Map.Instance.IsCellAvailable(cellPos) ? Color.yellow : Color.red);
     }
 }

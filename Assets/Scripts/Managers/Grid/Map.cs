@@ -37,7 +37,7 @@ public class Map : MonoBehaviour
         return newCell;
     }
 
-    public bool IsCellOccupied(Vector2Int cellPos, Vector2Int size = default)
+    public bool IsCellAvailable(Vector2Int cellPos, Vector2Int size = default)
     {
         if (size == default)
             size = Vector2Int.one;

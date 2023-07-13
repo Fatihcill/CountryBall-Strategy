@@ -11,6 +11,7 @@ public abstract class Building : ObjectModel
 
     protected virtual void Awake()
     {
+        IsImmortal = false;
         isClicked = false;
     }
 
@@ -22,14 +23,14 @@ public abstract class Building : ObjectModel
 
     protected virtual void OnInfo()
     {
-        GameManager.Instance.inputManager.ShowInformationMenu(
+        GameManager.Instance.ShowInformationMenu(
             ObjectData.name, ObjectData.preview, isProduce, this);
         isClicked = true;
     }
 
     protected virtual void OnHide()
     {
-        GameManager.Instance.inputManager.HideInfo();
+        GameManager.Instance.HideInfo();
         isClicked = false;
     }
 

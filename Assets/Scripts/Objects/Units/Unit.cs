@@ -7,16 +7,19 @@ using UnityEngine.Serialization;
 public abstract class Unit : ObjectModel
 {
     protected float Speed;
-    public Cell unitCell;   
-    public List<Cell> pathVectorList;
     private int _currentPathIndex;
     private bool _changedPos;
-    
+    public Cell unitCell;   
+    private readonly Cell _target = new(0, 0);
+    private List<Cell> _pathVectorList;
+    protected ObjectModel TargetGameObject;
+
+    private Vector3 _nextCellPos, _moveDir;
     protected virtual void Awake()
     {
+        IsImmortal = false;
         _currentPathIndex = 0;
         Speed = 5;
-        health = 10;
         unitCell = new Cell(0, 0);
     }
     
@@ -32,34 +35,18 @@ public abstract class Unit : ObjectModel
         GameManager.Instance.inputManager.OnExit.AddListener(StopAction);
     }
 
-    private Cell target = new(0, 0);
-    public void SetTargetPosition() {
+    protected abstract void ActionToTarget();
+    public void SetTargetPosition() 
+    {
         _currentPathIndex = 0;
-        target.pos = Map.Instance.cellIndicator.currentCell.pos;
-        pathVectorList = GameManager.Instance.pathfinding.FindPath(unitCell, target);
-    }
-
-    private void HandleMovement() {
-        if (pathVectorList != null && pathVectorList.Count > 0)
-        {
-            Vector3 targetPosition = pathVectorList[_currentPathIndex].worldPos;
-            if (Vector3.Distance(transform.position, targetPosition) > 0.1f) {
-                Vector3 moveDir = (targetPosition - transform.position).normalized;
-                transform.position += moveDir * Speed * Time.deltaTime;
-            } else {
-                _currentPathIndex++;
-                UpdatePos(pathVectorList[_currentPathIndex - 1].pos);
-                if (_currentPathIndex >= pathVectorList.Count) {
-                    pathVectorList = null;
-                    StopAction();
-                }
-            }
-        }
+        _target.pos = Map.Instance.cellIndicator.currentCell.pos;
+        int targetIndex = Map.Instance.gridData.GetRepresentationIndex(_target.pos);
+        TargetGameObject = GameManager.Instance.placementSystem.objectPlacer.GetPlacedObject(targetIndex);
+        _pathVectorList = GameManager.Instance.pathfinding.FindPath(unitCell, _target);
     }
 
     private void UpdatePos(Vector2Int currentPos)
     {
-        int placedObjectIndex = Map.Instance.gridData.GetRepresentationIndex(unitCell.pos);
         Map.Instance.gridData.RemoveObjectAt(unitCell.pos);
         Map.Instance.gridData.AddObject(currentPos, ObjectData.size, ObjectData.id, placedObjectIndex);
         unitCell.pos = currentPos;
@@ -68,12 +55,50 @@ public abstract class Unit : ObjectModel
     protected void StartAction()
     {
         SetTargetPosition();
+        if (TargetGameObject != null)
+            ActionToTarget();
         StopAction();
     }
-    
-    protected void StopAction()
+
+    private void StopAction()
     {
         GameManager.Instance.inputManager.OnAction.RemoveListener(StartAction);
         GameManager.Instance.inputManager.OnExit.RemoveListener(StopAction);
+    }
+    
+    private void HandleMovement() 
+    {
+        if (_pathVectorList is { Count: > 0 } && _currentPathIndex < _pathVectorList.Count)
+        {
+            _nextCellPos = _pathVectorList[_currentPathIndex].worldPos;
+            MovementAction();
+        }
+    }
+
+    private void MovementAction()
+    {
+        if (!Map.Instance.IsCellAvailable(_pathVectorList[_currentPathIndex].pos)) 
+        {
+            _currentPathIndex = 0;
+            _pathVectorList = null;
+            StopAction();
+            return;
+        }
+        if (Vector3.Distance(transform.position, _nextCellPos) > 0.1f)
+        {
+            _moveDir = (_nextCellPos - transform.position).normalized;
+            transform.position += _moveDir * (Speed * Time.deltaTime);
+        } 
+        else
+        {
+            _currentPathIndex++;
+            UpdatePos(_pathVectorList[_currentPathIndex - 1].pos);
+            if (_currentPathIndex >= _pathVectorList.Count) // Arrived the Target
+            {
+                _currentPathIndex = 0;
+                _pathVectorList = null;
+                StopAction();
+            }
+        }
     }
 }

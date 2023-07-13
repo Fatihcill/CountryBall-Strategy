@@ -27,7 +27,7 @@
             _rectTransform = GetComponent<RectTransform>();
             _contentGridLayout = content.GetComponent<GridLayoutGroup>();
             uiManager = transform.parent.GetComponent<UIManager>();
-            
+            objectPool = GetComponent<ObjectPooling>();
             items = uiManager.InitializeButtons(ObjectPreviewData.ObjectType.Building, buildingButtonPrefab, content);
             _width = (_contentGridLayout.cellSize.y + _contentGridLayout.spacing.y * ((items.Length % 2) + 1));
             _numberOfLine = (int) (_rectTransform.rect.height / _width);

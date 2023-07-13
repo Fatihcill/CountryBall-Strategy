@@ -10,6 +10,7 @@ public class CellIndicator : MonoBehaviour
     private Vector2 _defaultCellOffset;
     public Vector2 cellOffset;
     public Cell currentCell = new (0, 0);
+    
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -24,7 +25,7 @@ public class CellIndicator : MonoBehaviour
         transform.position =  currentCell.pos + cellOffset;
     }
     
-    public void UpdateState(Color color)
+    public void UpdatePlacementState(Color color)
     {
         _spriteRenderer.color = color;
     }

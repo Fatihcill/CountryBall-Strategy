@@ -12,6 +12,7 @@ public class GridData
     {
         _floorTilemap = tilemap;
     }
+
     public void AddObject(Vector2Int cellPos, Vector2Int objectSize, int id, int placedObjectIndex)
     {
         List<Vector2Int> positionToOccupy = CalculatePositions(cellPos, objectSize);
@@ -65,35 +66,31 @@ public class GridData
             _placedObjects.Remove(pos);
         }
     }
+
+    public void RemoveObject(int placedObjectIndex)
+    {
+        foreach (var item in _placedObjects)
+        {
+            if (item.Value.placedObjectIndex == placedObjectIndex)
+            {
+                RemoveObjectAt(item.Key);
+                return;
+            }
+        }
+    }
 }
 
-
+[Serializable]
 public class PlacementData
 {
     public readonly List<Vector2Int> OccupiedCells;
     public int id { get; set; }
     public int placedObjectIndex { get; set; }
+
     public PlacementData(List<Vector2Int> occupiedCells, int id, int placedObjectIndex)
     {
         this.OccupiedCells = occupiedCells;
         this.id = id;
         this.placedObjectIndex = placedObjectIndex;
-    }
-}
-
-[Serializable]
-public class Cell
-{
-    public Vector2Int pos;
-    public Vector2 worldPos;
-    public int gCost, hCost;
-    public Cell parent;
-    public int fCost => gCost + hCost;
-
-    public Cell(int x, int y)
-    {
-        pos.x = x;
-        pos.y = y;
-        worldPos = pos + (Vector2.one * 0.5f);
     }
 }

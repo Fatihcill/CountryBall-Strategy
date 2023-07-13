@@ -9,7 +9,7 @@ public class Barracks : Building
     {
         base.Awake();
         _spawnLocation = transform.GetChild(0);
-        this.health = 100;
+        this.MaxHealth = 100;
         this.isProduce = true;
         _spawnLocation.GetComponent<SpriteRenderer>().color = Color.clear;
         _spawnOffset = Vector2.one * 0.5f;
