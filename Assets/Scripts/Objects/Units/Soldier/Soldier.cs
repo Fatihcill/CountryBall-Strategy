@@ -19,20 +19,20 @@ public class Soldier : Unit
             //TargetGameObject.TakeDamage(damage);
         }
     }
-    //create ienumerator function for give damage to target
+    
     IEnumerator AttackTarget()
     {
         while (true)
         {
             if (TargetGameObject != null)
             {
-                anim.SetBool("Attack", true);
-                if (UnitMove.IsArrived)
+                AnimManager.SetAnim(AnimationTypes.Attack, true);
+                if (UnitMove.IsMoving)
                     TargetGameObject.TakeDamage(damage);
             }   
             else
             {
-                anim.SetBool("Attack", false);
+                AnimManager.SetAnim(AnimationTypes.Attack, false);
                 StopCoroutine(AttackTarget());
                 break;
             }

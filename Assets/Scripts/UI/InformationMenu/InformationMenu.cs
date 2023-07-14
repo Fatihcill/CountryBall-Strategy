@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class InformationMenu: MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI itemName;
+    [SerializeField]private TextMeshProUGUI itemName;
     [SerializeField]private Image preview;
     [SerializeField]private GameObject production;
     [SerializeField]private GameObject []productionButtons;

@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
         if (Instance != null && Instance != this)
             Destroy(this.gameObject);
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
         pathfinding = GetComponent<Pathfinding>();
         powerSystem = new PowerSystem(0);
     }

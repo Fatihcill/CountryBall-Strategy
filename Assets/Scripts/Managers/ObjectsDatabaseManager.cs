@@ -29,6 +29,7 @@ public class ObjectsDatabaseManager : MonoBehaviour
             _ => throw new Exception("Unknown object type")
         };
     }
+    
     public ObjectPreviewData GetObjectData(int id)
     {
         return database.itemPreviewData.Find(item => item.id == id);

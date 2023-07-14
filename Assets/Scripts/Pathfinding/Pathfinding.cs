@@ -23,13 +23,12 @@ public class Pathfinding : MonoBehaviour
     
     public List<Cell> FindPath(Cell source, Cell destination)
     {
-        int i = 100;
         Cell current = null;
         List<Cell> openSet = new();
         HashSet<Cell> closedSet = new();
         openSet.Add(source);
         destination.pos = FindBlockedTarget(source.pos, destination.pos);
-        while(openSet.Count > 0 && --i > 0)
+        while(openSet.Count > 0)
         {
             current = openSet[0];
 

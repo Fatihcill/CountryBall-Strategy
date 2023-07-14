@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] private Camera sceneCamera;
     private Vector2 _lastPosition;
     public UnityEvent OnClicked, OnExit, OnAction;
-    [FormerlySerializedAs("UnClicked")] public UnityEvent UnSelected;
+    public UnityEvent UnSelected;
 
     public bool IsPointerOverUI() => EventSystem.current.IsPointerOverGameObject();
     public Vector2 GetSelectedMapPosition()

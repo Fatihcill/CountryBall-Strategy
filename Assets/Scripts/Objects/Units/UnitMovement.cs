@@ -3,22 +3,27 @@ using UnityEngine;
 
 public class UnitMovement
 {
-    public bool IsArrived;
+    //Controls
+    public bool IsMoving;
     private List<Cell> _pathVectorList;
     private Vector3 _nextCellPos, _moveDir;
     private int _currentPathIndex;
+    private bool _changedPos;
+
+    //Unit Values
     private readonly Cell _unitCell;
     private readonly Vector2Int _size;
     private readonly int _id;
     private readonly int _index;
     private readonly int _speed;
     private readonly Transform _transform;
-    private bool _changedPos;
-    private Animator _anim;
+    private AnimManager _animManager;
+    
     //Rotate
     private SpriteRenderer _spriteRenderer;
     private float _angle;
-    public UnitMovement (ref Cell unitCell, Transform transform, Vector2Int size, int id, int index, int speed, Animator anim)
+    
+    public UnitMovement (ref Cell unitCell, Transform transform, Vector2Int size, int id, int index, int speed, AnimManager anim)
     {
         _unitCell = unitCell;
         _size = size;
@@ -26,15 +31,15 @@ public class UnitMovement
         _index = index;
         _speed = speed;
         _transform = transform;
-        _anim = anim;
+        _animManager = anim;
         _spriteRenderer = _transform.GetComponent<SpriteRenderer>();
-        IsArrived = false;
+        IsMoving = false;
     }
     
     public void InitializePathFinding(Cell startCell, Cell targetCell)
     {
-        _anim.SetBool("Walk", false);
-        IsArrived = false;
+        _animManager.SetAnim(AnimationTypes.Walk, false);
+        IsMoving = false;
         _changedPos = false;
         _currentPathIndex = 0;
         _pathVectorList = GameManager.Instance.pathfinding.FindPath(startCell, targetCell);
@@ -62,7 +67,8 @@ public class UnitMovement
             _transform.position += _moveDir * (_speed * Time.deltaTime);
             if (!_changedPos)
             {
-                _anim.SetBool("Walk", true);
+                IsMoving = true;
+                _animManager.SetAnim(AnimationTypes.Walk, true);
                 RotateTransform();
                 UpdatePos(_pathVectorList[_currentPathIndex].pos);
             }
@@ -73,10 +79,10 @@ public class UnitMovement
             _changedPos = false;
             if (_currentPathIndex >= _pathVectorList.Count) // Arrived the Target
             {
-                _anim.SetBool("Walk", false);
+                _animManager.SetAnim(AnimationTypes.Walk, false);
                 _currentPathIndex = 0;
                 _pathVectorList = null;
-                IsArrived = true;
+                IsMoving = false;
             }
         }
     }

@@ -1,29 +1,28 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public abstract class Unit : ObjectModel
 {
-    protected float Speed;
+    public int speed;
     private bool _changedPos;
     public Cell unitCell;   
     private readonly Cell _target = new(0, 0);
     protected ObjectModel TargetGameObject;
     protected UnitMovement UnitMove;
-    [SerializeField]protected Animator anim;
+    protected AnimManager AnimManager;
+    private Animator _anim;
+    
     protected virtual void Awake()
     {
         IsImmortal = false;
-        Speed = 5;
+        speed = 5;
         unitCell = new Cell(0, 0);
-        anim = GetComponent<Animator>();
+        _anim = GetComponent<Animator>();
     }
 
     protected virtual void Start()
     {
-        UnitMove = new UnitMovement(ref unitCell, transform, ObjectData.size, ObjectData.id, placedObjectIndex, (int)Speed, anim);   
+        AnimManager = new AnimManager(_anim);
+        UnitMove = new UnitMovement(ref unitCell, transform, ObjectData.size, ObjectData.id, placedObjectIndex, speed, AnimManager);   
     }
 
     protected virtual void Update()
@@ -57,6 +56,7 @@ public abstract class Unit : ObjectModel
     protected void StartAction()
     {
         SetTargetPosition();
+        Debug.Log(TargetGameObject);
         if (TargetGameObject != null)
             ActionToTarget();
         StopAction();
