@@ -56,7 +56,6 @@ public abstract class Unit : ObjectModel
     protected void StartAction()
     {
         SetTargetPosition();
-        Debug.Log(TargetGameObject);
         if (TargetGameObject != null)
             ActionToTarget();
         StopAction();

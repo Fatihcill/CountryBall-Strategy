@@ -10,6 +10,7 @@ public class ObjectModel : MonoBehaviour
     protected ObjectPreviewData ObjectData;
     private HealthSystem _healthSystem;
     public int placedObjectIndex;
+    
     public void SetObject(int id, Transform pfHealthBar, int index)
     {
         if (!IsImmortal)
@@ -32,7 +33,6 @@ public class ObjectModel : MonoBehaviour
 
     public virtual void TakeDamage(int amount)
     {
-        Debug.Log(amount);
         if (IsImmortal) return;
         _healthSystem.Damage(amount);
         if (_healthSystem.GetHealth() <= 0)

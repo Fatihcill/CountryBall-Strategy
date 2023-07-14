@@ -26,13 +26,15 @@ public class Soldier : Unit
         {
             if (TargetGameObject != null)
             {
-                AnimManager.SetAnim(AnimationTypes.Attack, true);
-                if (UnitMove.IsMoving)
+                if (!UnitMove.IsMoving)
+                {
+                    AnimManager.PlayOne(AnimationTypes.Attack);
                     TargetGameObject.TakeDamage(damage);
+                }            
             }   
             else
             {
-                AnimManager.SetAnim(AnimationTypes.Attack, false);
+                AnimManager.PlayOne(AnimationTypes.Idle);
                 StopCoroutine(AttackTarget());
                 break;
             }

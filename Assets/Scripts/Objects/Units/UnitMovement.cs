@@ -38,16 +38,17 @@ public class UnitMovement
     
     public void InitializePathFinding(Cell startCell, Cell targetCell)
     {
-        _animManager.SetAnim(AnimationTypes.Walk, false);
-        IsMoving = false;
+        IsMoving = true;
         _changedPos = false;
         _currentPathIndex = 0;
         _pathVectorList = GameManager.Instance.pathfinding.FindPath(startCell, targetCell);
+        if (_pathVectorList.Count == 0)
+            IsMoving = false;
     }
     
     public void HandleMovement() 
     {
-        if (_pathVectorList is { Count: > 0 } && _currentPathIndex < _pathVectorList.Count)
+        if (_pathVectorList?.Count > 0 && _currentPathIndex < _pathVectorList.Count)
         {
             _nextCellPos = _pathVectorList[_currentPathIndex].worldPos;
             MovementAction();
@@ -68,7 +69,7 @@ public class UnitMovement
             if (!_changedPos)
             {
                 IsMoving = true;
-                _animManager.SetAnim(AnimationTypes.Walk, true);
+                _animManager.SetAnim(AnimationTypes.Walk, IsMoving);
                 RotateTransform();
                 UpdatePos(_pathVectorList[_currentPathIndex].pos);
             }
@@ -79,12 +80,13 @@ public class UnitMovement
             _changedPos = false;
             if (_currentPathIndex >= _pathVectorList.Count) // Arrived the Target
             {
-                _animManager.SetAnim(AnimationTypes.Walk, false);
+                IsMoving = false;
+                _animManager.SetAnim(AnimationTypes.Walk, IsMoving);
                 _currentPathIndex = 0;
                 _pathVectorList = null;
-                IsMoving = false;
             }
         }
+        
     }
     
     private void UpdatePos(Vector2Int currentPos)
