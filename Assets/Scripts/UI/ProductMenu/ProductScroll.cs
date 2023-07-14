@@ -30,7 +30,7 @@
             objectPool = GetComponent<ObjectPooling>();
             items = uiManager.InitializeButtons(ObjectPreviewData.ObjectType.Building, buildingButtonPrefab, content);
             _width = (_contentGridLayout.cellSize.y + _contentGridLayout.spacing.y * ((items.Length % 2) + 1));
-            _numberOfLine = (int) (_rectTransform.rect.height / _width);
+            _numberOfLine = (int)(_rectTransform.rect.height / _width);
             for (int j = 0; j < (_numberOfLine * 2); j++)
             {
                 for (int i = 0; i < items.Length; i++)

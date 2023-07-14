@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI powerScoreText;
     private GameObject[] _items;
     
+    //INITIALIZATION BUTTONS FOR PRODUCTS
     public GameObject[] InitializeButtons(ObjectPreviewData.ObjectType type, GameObject prefab, Transform parent)
     {
         List<ObjectPreviewData> objects =  GameManager.Instance.database.GetObjectByType(type);

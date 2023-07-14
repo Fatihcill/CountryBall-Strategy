@@ -14,7 +14,7 @@ public class ObjectPooling : MonoBehaviour
             CreateObject,
             OnGet,
             OnRelease,
-            OnDie,
+            OnRemove,
             maxSize: 100
         );
     }
@@ -35,7 +35,7 @@ public class ObjectPooling : MonoBehaviour
         poolObject.gameObject.SetActive(false);
     }
 
-    private void OnDie(GameObject poolObject)
+    private void OnRemove(GameObject poolObject)
     {
         Destroy(poolObject.gameObject);
     }

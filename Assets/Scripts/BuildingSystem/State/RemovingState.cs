@@ -8,6 +8,7 @@ public class RemovingState : IBuildingState
     private readonly ObjectPlacer _objectPlacer;    
     private Sprite _defaultCell;
     private readonly CellIndicator _cellIndicator;
+    
     public RemovingState(ObjectPlacer objectPlacer, CellIndicator cellIndicator)
     {
         this._objectPlacer = objectPlacer;
@@ -21,7 +22,7 @@ public class RemovingState : IBuildingState
 
     public void OnAction(Vector2Int cellPos)
     {
-        if (!Map.Instance.IsCellAvailable(cellPos, Vector2Int.one))
+        if (!Map.Instance.IsCellAvailable(cellPos))
         {
             _gameObjectIndex =Map.Instance.gridData.GetRepresentationIndex(cellPos);
             if (_gameObjectIndex == -1)

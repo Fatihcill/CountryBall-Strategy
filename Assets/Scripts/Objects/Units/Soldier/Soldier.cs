@@ -26,11 +26,13 @@ public class Soldier : Unit
         {
             if (TargetGameObject != null)
             {
+                anim.SetBool("Attack", true);
                 if (UnitMove.IsArrived)
                     TargetGameObject.TakeDamage(damage);
             }   
             else
             {
+                anim.SetBool("Attack", false);
                 StopCoroutine(AttackTarget());
                 break;
             }

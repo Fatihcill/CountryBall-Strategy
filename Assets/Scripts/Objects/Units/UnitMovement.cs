@@ -14,10 +14,11 @@ public class UnitMovement
     private readonly int _speed;
     private readonly Transform _transform;
     private bool _changedPos;
+    private Animator _anim;
     //Rotate
     private SpriteRenderer _spriteRenderer;
     private float _angle;
-    public UnitMovement (ref Cell unitCell, Transform transform, Vector2Int size, int id, int index, int speed = 5)
+    public UnitMovement (ref Cell unitCell, Transform transform, Vector2Int size, int id, int index, int speed, Animator anim)
     {
         _unitCell = unitCell;
         _size = size;
@@ -25,12 +26,14 @@ public class UnitMovement
         _index = index;
         _speed = speed;
         _transform = transform;
+        _anim = anim;
         _spriteRenderer = _transform.GetComponent<SpriteRenderer>();
         IsArrived = false;
     }
     
     public void InitializePathFinding(Cell startCell, Cell targetCell)
     {
+        _anim.SetBool("Walk", false);
         IsArrived = false;
         _changedPos = false;
         _currentPathIndex = 0;
@@ -59,6 +62,7 @@ public class UnitMovement
             _transform.position += _moveDir * (_speed * Time.deltaTime);
             if (!_changedPos)
             {
+                _anim.SetBool("Walk", true);
                 RotateTransform();
                 UpdatePos(_pathVectorList[_currentPathIndex].pos);
             }
@@ -69,6 +73,7 @@ public class UnitMovement
             _changedPos = false;
             if (_currentPathIndex >= _pathVectorList.Count) // Arrived the Target
             {
+                _anim.SetBool("Walk", false);
                 _currentPathIndex = 0;
                 _pathVectorList = null;
                 IsArrived = true;

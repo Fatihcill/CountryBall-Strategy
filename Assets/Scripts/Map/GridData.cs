@@ -35,7 +35,6 @@ public class GridData
                 returnVal.Add(cellPos + new Vector2Int(x, y));
             }
         }
-
         return returnVal;
     }
 

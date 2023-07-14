@@ -12,16 +12,18 @@ public abstract class Unit : ObjectModel
     private readonly Cell _target = new(0, 0);
     protected ObjectModel TargetGameObject;
     protected UnitMovement UnitMove;
+    [SerializeField]protected Animator anim;
     protected virtual void Awake()
     {
         IsImmortal = false;
         Speed = 5;
         unitCell = new Cell(0, 0);
+        anim = GetComponent<Animator>();
     }
 
     protected virtual void Start()
     {
-        UnitMove = new UnitMovement(ref unitCell, transform, ObjectData.size, ObjectData.id, placedObjectIndex, (int)Speed);   
+        UnitMove = new UnitMovement(ref unitCell, transform, ObjectData.size, ObjectData.id, placedObjectIndex, (int)Speed, anim);   
     }
 
     protected virtual void Update()

@@ -29,10 +29,10 @@ public class ObjectModel : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
-    
-    
+
     public virtual void TakeDamage(int amount)
     {
+        Debug.Log(amount);
         if (IsImmortal) return;
         _healthSystem.Damage(amount);
         if (_healthSystem.GetHealth() <= 0)
