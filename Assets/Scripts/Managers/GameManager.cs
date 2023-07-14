@@ -6,7 +6,6 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public InputManager inputManager;
     public PlacementSystem placementSystem;
     public ObjectsDatabaseManager database;
     public Pathfinding pathfinding;

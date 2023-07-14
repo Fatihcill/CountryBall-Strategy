@@ -9,7 +9,7 @@ public class UnitMovement
     private Vector3 _nextCellPos, _moveDir;
     private int _currentPathIndex;
     private bool _changedPos;
-
+    
     //Unit Values
     private readonly Cell _unitCell;
     private readonly Vector2Int _size;
@@ -42,7 +42,7 @@ public class UnitMovement
         _changedPos = false;
         _currentPathIndex = 0;
         _pathVectorList = GameManager.Instance.pathfinding.FindPath(startCell, targetCell);
-        if (_pathVectorList.Count == 0)
+        if (_pathVectorList?.Count == 0)
             IsMoving = false;
     }
     

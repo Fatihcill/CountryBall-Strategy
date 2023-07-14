@@ -51,6 +51,44 @@ public class GridData
         return true;
     }
 
+    public List<Vector2Int> GetNeighboursOfPlacedObject(Vector2Int cellPos)
+    {
+        List<Vector2Int> neighbours = new List<Vector2Int>();
+    
+        if (_placedObjects.TryGetValue(cellPos, out PlacementData placedObject))
+        {
+            foreach (Vector2Int pos in placedObject.OccupiedCells)
+            {
+                List<Vector2Int> surroundingPositions = GetSurroundingPositions(pos);
+                foreach (Vector2Int surroundingPos in surroundingPositions)
+                {
+                    if (!neighbours.Contains(surroundingPos) && !_placedObjects.ContainsKey(surroundingPos))
+                    {
+                        neighbours.Add(surroundingPos);
+                    }
+                }
+            }
+        }
+        return neighbours;
+    }
+
+    private List<Vector2Int> GetSurroundingPositions(Vector2Int cellPos)
+    {
+        List<Vector2Int> surroundingPositions = new List<Vector2Int>
+        {
+            new Vector2Int(cellPos.x - 1, cellPos.y), // Left
+            new Vector2Int(cellPos.x + 1, cellPos.y), // Right
+            new Vector2Int(cellPos.x, cellPos.y - 1), // Down
+            new Vector2Int(cellPos.x, cellPos.y + 1),  // Up
+            new Vector2Int(cellPos.x + 1, cellPos.y + 1),//Right Up
+            new Vector2Int(cellPos.x + 1, cellPos.y - 1),
+            new Vector2Int(cellPos.x - 1, cellPos.y + 1),
+            new Vector2Int(cellPos.x - 1, cellPos.y - 1)
+        };
+    
+        return surroundingPositions;
+    }
+
     public int GetRepresentationIndex(Vector2Int cellPos)
     {
         if (_placedObjects.ContainsKey(cellPos))
@@ -76,6 +114,18 @@ public class GridData
                 return;
             }
         }
+    }
+
+    public List<Vector2Int> ReorderNeighboursByDistance(List<Vector2Int> neighbours, Vector2Int unitPosition)
+    {
+        neighbours.Sort((a, b) =>
+        {
+            float distanceA = Vector2Int.Distance(a, unitPosition);
+            float distanceB = Vector2Int.Distance(b, unitPosition);
+            return distanceA.CompareTo(distanceB);
+        });
+
+        return neighbours;
     }
 }
 

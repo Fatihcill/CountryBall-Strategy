@@ -8,12 +8,21 @@ using UnityEngine.Serialization;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance;
     [SerializeField] private Camera sceneCamera;
     private Vector2 _lastPosition;
     public UnityEvent OnClicked, OnExit, OnAction;
     public UnityEvent UnSelected;
 
     public bool IsPointerOverUI() => EventSystem.current.IsPointerOverGameObject();
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+            Destroy(this.gameObject);
+        Instance = this;
+    }
+
     public Vector2 GetSelectedMapPosition()
     {
         Vector2 mousePosition =sceneCamera.ScreenToWorldPoint(Input.mousePosition);;

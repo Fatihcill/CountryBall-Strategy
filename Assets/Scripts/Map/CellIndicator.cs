@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CellIndicator : MonoBehaviour
 {
-    [SerializeField] private InputManager inputManager;
     private SpriteRenderer _spriteRenderer;
     private Sprite _defaultSprite;
     private Vector2 _defaultCellOffset;
@@ -21,7 +20,7 @@ public class CellIndicator : MonoBehaviour
 
     private void Update()
     {
-        currentCell.pos = Vector2Int.FloorToInt(inputManager.GetSelectedMapPosition());
+        currentCell.pos = Vector2Int.FloorToInt(InputManager.Instance.GetSelectedMapPosition());
         transform.position =  currentCell.pos + cellOffset;
     }
     

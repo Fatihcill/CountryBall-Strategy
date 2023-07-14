@@ -7,7 +7,6 @@ public class ObjectPooling : MonoBehaviour
     private Transform _parent;
     private GameObject _prefab;
     public IObjectPool<GameObject> pool;
-    [SerializeField] private Transform defaultParent;
     
     private void Awake() {
         pool = new ObjectPool<GameObject>(

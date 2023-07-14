@@ -1,16 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class Unit : ObjectModel
 {
     public int speed;
     private bool _changedPos;
     public Cell unitCell;   
-    protected readonly Cell _target = new(0, 0);
+    protected readonly Cell Target = new(0, 0);
     protected ObjectModel TargetGameObject;
     protected UnitMovement UnitMove;
     protected AnimManager AnimManager;
     private Animator _anim;
-    
+    [FormerlySerializedAs("Neighbours")] [FormerlySerializedAs("test")] public List<Vector2Int> targetNeighbours;
     protected virtual void Awake()
     {
         IsImmortal = false;
@@ -22,7 +24,7 @@ public abstract class Unit : ObjectModel
     protected virtual void Start()
     {
         AnimManager = new AnimManager(_anim);
-        UnitMove = new UnitMovement(ref unitCell, transform, ObjectData.size, ObjectData.id, placedObjectIndex, speed, AnimManager);   
+        UnitMove = new UnitMovement(ref unitCell, transform, objectData.size, objectData.id, placedObjectIndex, speed, AnimManager);   
     }
 
     protected virtual void Update()
@@ -34,25 +36,37 @@ public abstract class Unit : ObjectModel
     {
         GetComponent<SpriteRenderer>().color = Color.green;
         unitCell.pos = Vector2Int.FloorToInt(transform.position);
-        GameManager.Instance.inputManager.OnAction.AddListener(StartAction);
-        GameManager.Instance.inputManager.OnExit.AddListener(StopAction);
+        InputManager.Instance.OnAction.AddListener(StartAction);
+        InputManager.Instance.OnExit.AddListener(StopAction);
     }
 
     protected void OnMouseUp()
     {
-        GameManager.Instance.inputManager.UnSelected.AddListener(StopAction);
+        InputManager.Instance.UnSelected.AddListener(StopAction);
     }
 
     protected abstract void ActionToTarget();
     
     public void SetTargetPosition() 
     {
-        _target.pos = Map.Instance.cellIndicator.currentCell.pos;
-        int targetIndex = Map.Instance.gridData.GetRepresentationIndex(_target.pos);
+        Target.pos = Map.Instance.cellIndicator.currentCell.pos;
+        int targetIndex = Map.Instance.gridData.GetRepresentationIndex(Target.pos);
         TargetGameObject = GameManager.Instance.placementSystem.objectPlacer.GetPlacedObject(targetIndex);
-        UnitMove.InitializePathFinding(unitCell, _target);
+        
+        targetNeighbours = Map.Instance.gridData.GetNeighboursOfPlacedObject(Target.pos);
+        targetNeighbours = Map.Instance.gridData.ReorderNeighboursByDistance(targetNeighbours, unitCell.pos);
+        foreach (Vector2Int neighbour in targetNeighbours)
+        {
+            if (Map.Instance.IsCellAvailable(neighbour))
+            {
+                Target.pos = neighbour;
+                break;
+            }
+        }
+        
+        UnitMove.InitializePathFinding(unitCell, Target);
     }
-
+   
     protected void StartAction()
     {
         SetTargetPosition();
@@ -64,8 +78,8 @@ public abstract class Unit : ObjectModel
     private void StopAction()
     {
         GetComponent<SpriteRenderer>().color = Color.white;
-        GameManager.Instance.inputManager.OnAction.RemoveListener(StartAction);
-        GameManager.Instance.inputManager.OnExit.RemoveListener(StopAction);
-        GameManager.Instance.inputManager.UnSelected.RemoveListener(StopAction);
+        InputManager.Instance.OnAction.RemoveListener(StartAction);
+        InputManager.Instance.OnExit.RemoveListener(StopAction);
+        InputManager.Instance.UnSelected.RemoveListener(StopAction);
     }
 }

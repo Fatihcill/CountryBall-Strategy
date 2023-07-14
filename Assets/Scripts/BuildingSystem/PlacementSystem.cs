@@ -25,8 +25,8 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         _buildingState = new PlacementState(id, objectPlacer, _cellIndicator);
-        GameManager.Instance.inputManager.OnClicked.AddListener(PlaceStructure);
-        GameManager.Instance.inputManager.OnExit.AddListener(StopPlacement);
+         InputManager.Instance.OnClicked.AddListener(PlaceStructure);
+         InputManager.Instance.OnExit.AddListener(StopPlacement);
     }
     public void StartCreatingObject(int id, Vector2Int spawnPos)
     {
@@ -39,16 +39,16 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         _buildingState = new RemovingState(objectPlacer, _cellIndicator);
-        GameManager.Instance.inputManager.OnClicked.AddListener(PlaceStructure);
-        GameManager.Instance.inputManager.OnExit.AddListener(StopPlacement);
+         InputManager.Instance.OnClicked.AddListener(PlaceStructure);
+         InputManager.Instance.OnExit.AddListener(StopPlacement);
     }
     
     public void StopPlacement()
     {
         if (_buildingState == null) return;
         _buildingState.EndState();
-        GameManager.Instance.inputManager.OnClicked.RemoveListener(PlaceStructure);
-        GameManager.Instance.inputManager.OnExit.RemoveListener(StopPlacement);
+         InputManager.Instance.OnClicked.RemoveListener(PlaceStructure);
+         InputManager.Instance.OnExit.RemoveListener(StopPlacement);
         _buildingState = null;
     }
  

@@ -7,7 +7,7 @@ public class ObjectModel : MonoBehaviour
 {
     protected bool IsImmortal;
     protected int MaxHealth;
-    protected ObjectPreviewData ObjectData;
+    public ObjectPreviewData objectData;
     private HealthSystem _healthSystem;
     public int placedObjectIndex;
     
@@ -21,17 +21,17 @@ public class ObjectModel : MonoBehaviour
             healthBar.Setup(_healthSystem);
         }
         placedObjectIndex = index;
-        ObjectData = GameManager.Instance.database.GetObjectData(id);
-        if (ObjectData == null)
+        objectData = GameManager.Instance.database.GetObjectData(id);
+        if (objectData == null)
             throw new Exception("Object can't access the database");
     }
     
-    public virtual void DestroyObject() 
+    public void DestroyObject() 
     {
         Destroy(this.gameObject);
     }
 
-    public virtual void TakeDamage(int amount)
+    public void TakeDamage(int amount)
     {
         if (IsImmortal) return;
         _healthSystem.Damage(amount);
