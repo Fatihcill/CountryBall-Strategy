@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class InputManager : MonoBehaviour
 {
     [SerializeField] private Camera sceneCamera;
     private Vector2 _lastPosition;
-    public UnityEvent OnClicked, OnExit, OnAction, OnHideInfo;
+    public UnityEvent OnClicked, OnExit, OnAction;
+    [FormerlySerializedAs("UnClicked")] public UnityEvent UnSelected;
 
     public bool IsPointerOverUI() => EventSystem.current.IsPointerOverGameObject();
     public Vector2 GetSelectedMapPosition()
@@ -26,8 +28,8 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             OnClicked?.Invoke();
-            OnHideInfo?.Invoke();
-            OnHideInfo?.RemoveAllListeners();
+            UnSelected?.Invoke();
+            UnSelected?.RemoveAllListeners();
         }
         if (Input.GetMouseButton(1))
         {

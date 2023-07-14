@@ -23,7 +23,7 @@ public class PowerPlant : Building
 
     private IEnumerator IncreasePower()
     {
-        while (true) // Run this Coroutine in an infinite loop.
+        while (true)
         {
             GameManager.Instance.UpdatePower(_powerIncreaseAmount);
             yield return new WaitForSeconds(_powerIncreaseInterval);

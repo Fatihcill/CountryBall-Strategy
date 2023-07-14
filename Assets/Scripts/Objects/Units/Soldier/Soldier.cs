@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Soldier : Unit
 {
@@ -14,10 +15,29 @@ public class Soldier : Unit
     {
         if (TargetGameObject.placedObjectIndex != this.placedObjectIndex)
         {
-            TargetGameObject.TakeDamage(damage);
+            StartCoroutine(AttackTarget());
+            //TargetGameObject.TakeDamage(damage);
         }
     }
-
+    //create ienumerator function for give damage to target
+    IEnumerator AttackTarget()
+    {
+        while (true)
+        {
+            if (TargetGameObject != null)
+            {
+                if (UnitMove.IsArrived)
+                    TargetGameObject.TakeDamage(damage);
+            }   
+            else
+            {
+                StopCoroutine(AttackTarget());
+                break;
+            }
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    
     public virtual void Attack(ObjectModel target)
     {
         target.TakeDamage(damage);

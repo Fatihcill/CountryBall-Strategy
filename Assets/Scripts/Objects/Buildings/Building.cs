@@ -18,19 +18,19 @@ public abstract class Building : ObjectModel
     protected virtual void OnMouseUp()
     {
         OnInfo();
-        GameManager.Instance.inputManager.OnHideInfo.AddListener(OnHide);
+        GameManager.Instance.inputManager.UnSelected.AddListener(OnHide);
     }
 
     protected virtual void OnInfo()
     {
-        GameManager.Instance.ShowInformationMenu(
+        GameManager.Instance.uiManager.ShowInformationMenu(
             ObjectData.name, ObjectData.preview, isProduce, this);
         isClicked = true;
     }
 
     protected virtual void OnHide()
     {
-        GameManager.Instance.HideInfo();
+        GameManager.Instance.uiManager.HideInfo();
         isClicked = false;
     }
 
