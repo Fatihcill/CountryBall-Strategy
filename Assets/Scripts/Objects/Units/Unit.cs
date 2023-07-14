@@ -5,7 +5,7 @@ public abstract class Unit : ObjectModel
     public int speed;
     private bool _changedPos;
     public Cell unitCell;   
-    private readonly Cell _target = new(0, 0);
+    protected readonly Cell _target = new(0, 0);
     protected ObjectModel TargetGameObject;
     protected UnitMovement UnitMove;
     protected AnimManager AnimManager;

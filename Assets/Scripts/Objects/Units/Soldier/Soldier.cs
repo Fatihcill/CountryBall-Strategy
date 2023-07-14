@@ -4,7 +4,7 @@ using UnityEngine;
 public class Soldier : Unit
 {
     [SerializeField]protected int damage;
-
+    private Vector3 TargetCurrentPos;
     protected override void Awake()
     {
         base.Awake();
@@ -15,6 +15,7 @@ public class Soldier : Unit
     {
         if (TargetGameObject.placedObjectIndex != this.placedObjectIndex)
         {
+            TargetCurrentPos = TargetGameObject.transform.position; 
             StartCoroutine(AttackTarget());
             //TargetGameObject.TakeDamage(damage);
         }
@@ -24,12 +25,12 @@ public class Soldier : Unit
     {
         while (true)
         {
-            if (TargetGameObject != null)
+            if (TargetGameObject != null && TargetCurrentPos == TargetGameObject.transform.position)
             {
                 if (!UnitMove.IsMoving)
                 {
                     AnimManager.PlayOne(AnimationTypes.Attack);
-                    TargetGameObject.TakeDamage(damage);
+                    Attack(TargetGameObject);
                 }            
             }   
             else
