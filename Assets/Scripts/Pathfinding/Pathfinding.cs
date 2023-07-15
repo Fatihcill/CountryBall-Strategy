@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    private Vector2Int FindBlockedTarget(Vector2Int startPos, Vector2Int targetPos)
+    private Vector2Int FindBlockedTarget(Vector2Int startPos, Vector2Int targetPos, Vector2Int sourceSize)
     {
-        if (!Map.Instance.IsCellAvailable(targetPos, Vector2Int.one))
+        if (!Map.Instance.IsCellAvailable(targetPos, sourceSize))
         {
             Vector2 direction = startPos - targetPos;
             Vector2Int adjustedTargetPos = Vector2Int.zero;
@@ -21,13 +21,13 @@ public class Pathfinding : MonoBehaviour
         return targetPos;
     }
     
-    public List<Cell> FindPath(Cell source, Cell destination)
+    public List<Cell> FindPath(Cell source, Cell destination, Vector2Int sourceSize, int index)
     {
         Cell current = null;
         List<Cell> openSet = new();
         HashSet<Cell> closedSet = new();
         openSet.Add(source);
-        destination.pos = FindBlockedTarget(source.pos, destination.pos);
+        destination.pos = FindBlockedTarget(source.pos, destination.pos, sourceSize);
         while(openSet.Count > 0)
         {
             current = openSet[0];
@@ -48,8 +48,8 @@ public class Pathfinding : MonoBehaviour
                 return GetPath(source, current);
             }
             foreach(Cell neighbourTile in GetNeighbourTiles(current))
-            {   
-                if (Map.Instance.IsCellAvailable(neighbourTile.pos) == false || closedSet.Contains(neighbourTile))
+            {
+                if (!Map.Instance.IsCellAvailable(neighbourTile.pos, sourceSize, index) || closedSet.Contains(neighbourTile))
                     continue;
                 int movementCost = current.gCost + GetDistance(current, neighbourTile);
                 if( movementCost < neighbourTile.gCost || !openSet.Contains(neighbourTile))

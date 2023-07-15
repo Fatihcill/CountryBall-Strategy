@@ -41,7 +41,7 @@ public class UnitMovement
         IsMoving = true;
         _changedPos = false;
         _currentPathIndex = 0;
-        _pathVectorList = GameManager.Instance.pathfinding.FindPath(startCell, targetCell);
+        _pathVectorList = GameManager.Instance.pathfinding.FindPath(startCell, targetCell, _size, _index);
         if (_pathVectorList?.Count == 0)
             IsMoving = false;
     }
@@ -58,7 +58,8 @@ public class UnitMovement
     private void MovementAction()
     {
         float distance = Vector3.Distance(_transform.position, _nextCellPos);
-        if (!_changedPos && !Map.Instance.IsCellAvailable(_pathVectorList[_currentPathIndex].pos)) // RECALCULATE PATH IF CELL IS NOT AVAILABLE
+        int curi = Map.Instance.gridData.GetRepresentationIndex(_pathVectorList[_currentPathIndex].pos);
+        if (!_changedPos && !(curi == -1 || curi == _index)) // RECALCULATE PATH IF CELL IS NOT AVAILABLE
         {
             InitializePathFinding(_unitCell, _pathVectorList[_pathVectorList.Count - 1]);
         }

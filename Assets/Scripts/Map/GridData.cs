@@ -50,7 +50,18 @@ public class GridData
         }
         return true;
     }
-
+    public bool CanPlaceObjectAt(Vector2Int cellPos, Vector2Int objectSize, int index)
+    {
+        List<Vector2Int> positionToOccupy = CalculatePositions(cellPos, objectSize);
+        foreach (var pos in positionToOccupy)
+        {
+            if ((_placedObjects.ContainsKey(pos) && GetRepresentationIndex(pos) != index) || _floorTilemap.GetTile((Vector3Int)pos) == null)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     public List<Vector2Int> GetNeighboursOfPlacedObject(Vector2Int cellPos)
     {
         List<Vector2Int> neighbours = new List<Vector2Int>();
@@ -80,7 +91,7 @@ public class GridData
             new Vector2Int(cellPos.x + 1, cellPos.y), // Right
             new Vector2Int(cellPos.x, cellPos.y - 1), // Down
             new Vector2Int(cellPos.x, cellPos.y + 1),  // Up
-            new Vector2Int(cellPos.x + 1, cellPos.y + 1),//Right Up
+            new Vector2Int(cellPos.x + 1, cellPos.y + 1),
             new Vector2Int(cellPos.x + 1, cellPos.y - 1),
             new Vector2Int(cellPos.x - 1, cellPos.y + 1),
             new Vector2Int(cellPos.x - 1, cellPos.y - 1)

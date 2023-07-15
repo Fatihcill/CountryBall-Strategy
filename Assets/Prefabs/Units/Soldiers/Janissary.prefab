@@ -126,14 +126,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ebc76d90050cab4a9e97c702c1ab838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectData:
+    <name>k__BackingField: 
+    <id>k__BackingField: 0
+    <size>k__BackingField: {x: 1, y: 1}
+    <prefab>k__BackingField: {fileID: 0}
+    <preview>k__BackingField: {fileID: 0}
+    <type>k__BackingField: 0
   placedObjectIndex: 0
+  speed: 0
   unitCell:
     pos: {x: 0, y: 0}
     worldPos: {x: 0, y: 0}
     gCost: 0
     hCost: 0
+  targetNeighbours: []
   damage: 0
-  anim: {fileID: 0}
 --- !u!95 &5509368584539646837
 Animator:
   serializedVersion: 5

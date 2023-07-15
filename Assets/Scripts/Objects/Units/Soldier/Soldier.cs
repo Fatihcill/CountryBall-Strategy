@@ -17,7 +17,6 @@ public class Soldier : Unit
         {
             TargetCurrentPos = TargetGameObject.transform.position; 
             StartCoroutine(AttackTarget());
-            //TargetGameObject.TakeDamage(damage);
         }
     }
     

@@ -43,6 +43,12 @@ public class Map : MonoBehaviour
             size = Vector2Int.one;
         return gridData.CanPlaceObjectAt(cellPos, size);
     }
+    
+    public bool IsCellAvailable(Vector2Int cellPos, Vector2Int size, int index)
+    {
+        return (gridData.CanPlaceObjectAt(cellPos, size, index));
+    }
+    
     private void Update()
     {
         currentPos = cellIndicator.currentCell.pos;
