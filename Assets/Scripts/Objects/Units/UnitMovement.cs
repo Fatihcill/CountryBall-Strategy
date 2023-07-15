@@ -42,7 +42,7 @@ public class UnitMovement
         _changedPos = false;
         _currentPathIndex = 0;
         _pathVectorList = GameManager.Instance.pathfinding.FindPath(startCell, targetCell, _size, _index);
-        if (_pathVectorList?.Count == 0)
+        if (_pathVectorList?.Count == 0 || startCell.pos == targetCell.pos)
             IsMoving = false;
     }
     
@@ -58,9 +58,10 @@ public class UnitMovement
     private void MovementAction()
     {
         float distance = Vector3.Distance(_transform.position, _nextCellPos);
-        int curi = Map.Instance.gridData.GetRepresentationIndex(_pathVectorList[_currentPathIndex].pos);
-        if (!_changedPos && !(curi == -1 || curi == _index)) // RECALCULATE PATH IF CELL IS NOT AVAILABLE
+        int currentIndex = Map.Instance.gridData.GetRepresentationIndex(_pathVectorList[_currentPathIndex].pos);
+        if (!_changedPos && !(currentIndex == -1 || currentIndex == _index)) // RECALCULATE PATH IF CELL IS NOT AVAILABLE
         {
+            _animManager.SetAnim(AnimationTypes.Walk, false);
             InitializePathFinding(_unitCell, _pathVectorList[_pathVectorList.Count - 1]);
         }
         else if (distance > 0.1f)
@@ -70,7 +71,7 @@ public class UnitMovement
             if (!_changedPos)
             {
                 IsMoving = true;
-                _animManager.SetAnim(AnimationTypes.Walk, IsMoving);
+                _animManager.SetAnim(AnimationTypes.Walk, true);
                 RotateTransform();
                 UpdatePos(_pathVectorList[_currentPathIndex].pos);
             }
@@ -82,12 +83,11 @@ public class UnitMovement
             if (_currentPathIndex >= _pathVectorList.Count) // Arrived the Target
             {
                 IsMoving = false;
-                _animManager.SetAnim(AnimationTypes.Walk, IsMoving);
+                _animManager.SetAnim(AnimationTypes.Walk, false);
                 _currentPathIndex = 0;
                 _pathVectorList = null;
             }
         }
-        
     }
     
     private void UpdatePos(Vector2Int currentPos)

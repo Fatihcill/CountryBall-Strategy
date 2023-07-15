@@ -8,6 +8,6 @@ public class Knight : Soldier
     protected override void Awake()
     {
         base.Awake();
-        this.damage = 10;
+        this.Damage = 10;
     }
 }

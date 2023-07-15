@@ -25,6 +25,7 @@ public abstract class Unit : ObjectModel
     {
         AnimManager = new AnimManager(_anim);
         UnitMove = new UnitMovement(ref unitCell, transform, objectData.size, objectData.id, placedObjectIndex, speed, AnimManager);   
+        unitCell.pos = Vector2Int.FloorToInt(transform.position);
     }
 
     protected virtual void Update()
@@ -35,7 +36,6 @@ public abstract class Unit : ObjectModel
     protected void OnMouseDown()
     {
         GetComponent<SpriteRenderer>().color = Color.green;
-        unitCell.pos = Vector2Int.FloorToInt(transform.position);
         InputManager.Instance.OnAction.AddListener(StartAction);
         InputManager.Instance.OnExit.AddListener(StopAction);
     }
@@ -50,23 +50,35 @@ public abstract class Unit : ObjectModel
     public void SetTargetPosition() 
     {
         Target.pos = Map.Instance.cellIndicator.currentCell.pos;
+        GetTargetObject();
+        UnitMove.InitializePathFinding(unitCell, Target);
+    }
+
+    private void GetTargetObject()
+    {
+        bool foundNeighbour = false;
         int targetIndex = Map.Instance.gridData.GetRepresentationIndex(Target.pos);
         TargetGameObject = GameManager.Instance.placementSystem.objectPlacer.GetPlacedObject(targetIndex);
-        
-        targetNeighbours = Map.Instance.gridData.GetNeighboursOfPlacedObject(Target.pos);
+        targetNeighbours = Map.Instance.gridData.GetNeighboursOfPlacedObject(Target.pos, unitCell.pos);
         targetNeighbours = Map.Instance.gridData.ReorderNeighboursByDistance(targetNeighbours, unitCell.pos);
+        if (targetNeighbours == null)
+        {
+            Target.pos = unitCell.pos;
+            return;
+        }
         foreach (Vector2Int neighbour in targetNeighbours)
         {
             if (Map.Instance.IsCellAvailable(neighbour))
             {
+                foundNeighbour = true;
                 Target.pos = neighbour;
                 break;
             }
         }
-        
-        UnitMove.InitializePathFinding(unitCell, Target);
+        if (!foundNeighbour)
+            TargetGameObject = null;
     }
-   
+    
     protected void StartAction()
     {
         SetTargetPosition();

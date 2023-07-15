@@ -62,7 +62,8 @@ public class GridData
         }
         return true;
     }
-    public List<Vector2Int> GetNeighboursOfPlacedObject(Vector2Int cellPos)
+    
+    public List<Vector2Int> GetNeighboursOfPlacedObject(Vector2Int cellPos, Vector2Int currentPos = default)
     {
         List<Vector2Int> neighbours = new List<Vector2Int>();
     
@@ -73,6 +74,10 @@ public class GridData
                 List<Vector2Int> surroundingPositions = GetSurroundingPositions(pos);
                 foreach (Vector2Int surroundingPos in surroundingPositions)
                 {
+                    if (currentPos != default && surroundingPos == currentPos)
+                    {
+                        return null;
+                    }
                     if (!neighbours.Contains(surroundingPos) && !_placedObjects.ContainsKey(surroundingPos))
                     {
                         neighbours.Add(surroundingPos);
@@ -129,7 +134,7 @@ public class GridData
 
     public List<Vector2Int> ReorderNeighboursByDistance(List<Vector2Int> neighbours, Vector2Int unitPosition)
     {
-        neighbours.Sort((a, b) =>
+        neighbours?.Sort((a, b) =>
         {
             float distanceA = Vector2Int.Distance(a, unitPosition);
             float distanceB = Vector2Int.Distance(b, unitPosition);

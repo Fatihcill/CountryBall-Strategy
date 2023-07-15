@@ -7,6 +7,6 @@ public class Spearman : Soldier
     protected override void Awake()
     {
         base.Awake();
-        this.damage = 2;
+        this.Damage = 2;
     }
 }

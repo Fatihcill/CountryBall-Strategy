@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Soldier : Unit
 {
-    [SerializeField]protected int damage;
-    private Vector3 TargetCurrentPos;
+    protected int Damage;
+    private Vector3 _targetCurrentPos;
     protected override void Awake()
     {
         base.Awake();
@@ -15,7 +15,7 @@ public class Soldier : Unit
     {
         if (TargetGameObject.placedObjectIndex != this.placedObjectIndex)
         {
-            TargetCurrentPos = TargetGameObject.transform.position; 
+            _targetCurrentPos = TargetGameObject.transform.position; 
             StartCoroutine(AttackTarget());
         }
     }
@@ -24,7 +24,7 @@ public class Soldier : Unit
     {
         while (true)
         {
-            if (TargetGameObject != null && TargetCurrentPos == TargetGameObject.transform.position)
+            if (TargetGameObject != null && Vector3.Distance(_targetCurrentPos, TargetGameObject.transform.position) < 2f)
             {
                 if (!UnitMove.IsMoving)
                 {
@@ -44,6 +44,6 @@ public class Soldier : Unit
     
     public virtual void Attack(ObjectModel target)
     {
-        target.TakeDamage(damage);
+        target.TakeDamage(Damage);
     }
 }

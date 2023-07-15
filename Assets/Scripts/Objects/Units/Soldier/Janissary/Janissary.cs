@@ -8,6 +8,6 @@ public class Janissary : Soldier
     protected override void Awake()
     {
         base.Awake();
-        this.damage = 5;
+        this.Damage = 5;
     }
 }

@@ -1,4 +1,5 @@
-﻿    using System.Collections.Generic;
+﻿    using System;
+    using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.Pool;
     using UnityEngine.UI;
@@ -29,8 +30,8 @@
             uiManager = transform.parent.GetComponent<UIManager>();
             objectPool = GetComponent<ObjectPooling>();
             items = uiManager.InitializeButtons(ObjectPreviewData.ObjectType.Building, buildingButtonPrefab, content);
-            _width = (_contentGridLayout.cellSize.y + _contentGridLayout.spacing.y * ((items.Length % 2) + 1));
-            _numberOfLine = (int)(_rectTransform.rect.height / _width);
+            _width = (_contentGridLayout.cellSize.y + _contentGridLayout.spacing.y) * items.Length;
+            _numberOfLine = (int)Math.Ceiling(_rectTransform.rect.height / _width);
             for (int j = 0; j < (_numberOfLine * 2); j++)
             {
                 for (int i = 0; i < items.Length; i++)
@@ -51,7 +52,7 @@
         private void MoveContent()
         {
             var position = content.position;
-            position = new Vector3(position.x, position.y + (_width * (_numberOfLine - 1)) , position.z);
+            position = new Vector3(position.x, position.y + _width * (_numberOfLine) * 2, position.z);
             content.position = position;
         }
 
@@ -63,14 +64,15 @@
                 cloneItems.RemoveAt(i);
             }
         }
+        
         public void OnScroll()
         {
-            if (_scrollRect.verticalNormalizedPosition >= 1)
+            if (_scrollRect.verticalNormalizedPosition >= 1f)
             {
                 DestroyItems();
                 MoveContent();
             }
-            if (_scrollRect.verticalNormalizedPosition <= 0)
+            if (_scrollRect.verticalNormalizedPosition <= 0.1f)
             {
                 InstantiateItem();
             }
