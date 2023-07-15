@@ -1,12 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Barracks : Building
 {
     private Transform _spawnLocation;
     private Vector2 _spawnOffset;
-    private List<Vector2Int> myNeighbours;
+    private List<Vector2Int> _myNeighbours;
     private bool _changedSpawnPos;
     protected override void Awake()
     {
@@ -20,22 +20,22 @@ public class Barracks : Building
 
     private void Start()
     {
-        myNeighbours = Map.Instance.gridData.GetNeighboursOfPlacedObject(Vector2Int.FloorToInt(transform.position));
+        _myNeighbours = Map.Instance.gridData.GetNeighboursOfPlacedObject(Vector2Int.FloorToInt(transform.position));
     }
 
     public override void ProduceUnit(int soldierType)
     {
         base.ProduceUnit(soldierType);
-        ObjectPreviewData unitData = GameManager.Instance.database.GetObjectData(soldierType);
+        GameManager.Instance.database.GetObjectData(soldierType);
         Vector2Int unitPos = Vector2Int.FloorToInt(_spawnLocation.transform.position);
         GameManager.Instance.placementSystem.StartCreatingObject(soldierType, unitPos);
-        spawnPoint();
+        SpawnPoint();
     }
 
     private void MoveSpawnPointManually()
     {
         _changedSpawnPos = true;
-        _spawnLocation.transform.position = (Vector2)Map.Instance.currentPos + _spawnOffset;
+        _spawnLocation.transform.position = Map.Instance.currentPos + _spawnOffset;
     }
 
     protected override void OnInfo()
@@ -44,21 +44,16 @@ public class Barracks : Building
         InputManager.Instance.OnAction.RemoveAllListeners();
         InputManager.Instance.OnAction.AddListener(MoveSpawnPointManually);
         _spawnLocation.GetComponent<SpriteRenderer>().color = Color.white;
-        spawnPoint();
+        SpawnPoint();
     }
 
-    private void spawnPoint()
+    private void SpawnPoint()
     {
-        if (!_changedSpawnPos)
+        if (_changedSpawnPos) return;
+        foreach (var neighbour in _myNeighbours.Where(neighbour => Map.Instance.IsCellAvailable(neighbour)))
         {
-            foreach (Vector2Int neighbour in myNeighbours)
-            {
-                if (Map.Instance.IsCellAvailable(neighbour))
-                {
-                    _spawnLocation.transform.position = (Vector2)neighbour + _spawnOffset;
-                    break;
-                }
-            }
+            _spawnLocation.transform.position = neighbour + _spawnOffset;
+            break;
         }
     }
 

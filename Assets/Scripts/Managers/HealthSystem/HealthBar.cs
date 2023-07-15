@@ -4,6 +4,12 @@ using UnityEngine;
 public class HealthBar : MonoBehaviour
 {
     private HealthSystem _healthSystem;
+    private Transform _transform;
+
+    private void Start()
+    {
+        _transform = transform.Find("Bar");
+    }
 
     public void Setup(HealthSystem healthSystem)
     {
@@ -13,6 +19,6 @@ public class HealthBar : MonoBehaviour
     
     private void healthSystemOnHealthChanged(object sender, EventArgs e)
     {
-        transform.Find("Bar").localScale = new Vector3(_healthSystem.GetHealthPercent(), 1);
+        _transform.localScale = new Vector3(_healthSystem.GetHealthPercent(), 1);
     }
 }

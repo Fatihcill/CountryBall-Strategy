@@ -9,21 +9,21 @@ public class GameManager : MonoBehaviour
     public PlacementSystem placementSystem;
     public ObjectsDatabaseManager database;
     public Pathfinding pathfinding;
-    public PowerSystem powerSystem;
     public UIManager uiManager;
-    
+    private PowerSystem _powerSystem;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
             Destroy(this.gameObject);
         Instance = this;
         pathfinding = GetComponent<Pathfinding>();
-        powerSystem = new PowerSystem(0);
+        _powerSystem = new PowerSystem(0);
     }
     
     public void UpdatePower(int amount)
     {
-        powerSystem.UpdatePower(amount);
-        uiManager.IncreasePowerScore(powerSystem.GetPower());
+        _powerSystem.UpdatePower(amount);
+        uiManager.IncreasePowerScore(_powerSystem.GetPower());
     }
 }

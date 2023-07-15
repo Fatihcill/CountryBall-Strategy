@@ -6,9 +6,11 @@ public static class AnimationTypes
     public static readonly string Idle = "Idle";
     public static readonly string Attack = "Attack";
 }
+
 public class AnimManager
 {
     private Animator _animator;
+    
     public AnimManager(Animator animator)
     {
         _animator = animator;

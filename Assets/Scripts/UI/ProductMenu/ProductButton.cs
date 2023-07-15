@@ -1,17 +1,17 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ProductButton : MonoBehaviour
 {
     public Building producer;
     public int id;
-    public void SetButton(int id, Sprite preview, string text)
+    
+    public void SetButton(int unitId, Sprite preview, string text)
     {
         GetComponent<Image>().sprite = preview;
         GetComponentInChildren<TextMeshProUGUI>().text = text;
-        this.id = id;
+        id = unitId;
     }
 
     public void PlacementAction()

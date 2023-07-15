@@ -9,6 +9,7 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] public ObjectPlacer objectPlacer;
     private IBuildingState _buildingState;
     private CellIndicator _cellIndicator;
+    
     private void Start()
     {
         StopPlacement();
@@ -28,6 +29,7 @@ public class PlacementSystem : MonoBehaviour
          InputManager.Instance.OnClicked.AddListener(PlaceStructure);
          InputManager.Instance.OnExit.AddListener(StopPlacement);
     }
+    
     public void StartCreatingObject(int id, Vector2Int spawnPos)
     {
         StopPlacement();
@@ -35,6 +37,7 @@ public class PlacementSystem : MonoBehaviour
         _buildingState.OnAction(spawnPos);
         StopPlacement();
     }
+    
     public void StartRemoving()
     {
         StopPlacement();
@@ -57,7 +60,4 @@ public class PlacementSystem : MonoBehaviour
         _buildingState.OnAction(_cellIndicator.currentCell.pos);
         StopPlacement();
     }
-    
-
-
 }

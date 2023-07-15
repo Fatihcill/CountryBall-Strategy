@@ -5,6 +5,7 @@ public class Soldier : Unit
 {
     protected int Damage;
     private Vector3 _targetCurrentPos;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -19,8 +20,8 @@ public class Soldier : Unit
             StartCoroutine(AttackTarget());
         }
     }
-    
-    IEnumerator AttackTarget()
+
+    private IEnumerator AttackTarget()
     {
         while (true)
         {
@@ -41,8 +42,8 @@ public class Soldier : Unit
             yield return new WaitForSeconds(1f);
         }
     }
-    
-    public virtual void Attack(ObjectModel target)
+
+    protected virtual void Attack(ObjectModel target)
     {
         target.TakeDamage(Damage);
     }

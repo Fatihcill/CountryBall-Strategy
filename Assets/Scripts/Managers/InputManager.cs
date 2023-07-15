@@ -11,10 +11,9 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
     [SerializeField] private Camera sceneCamera;
     private Vector2 _lastPosition;
-    public UnityEvent OnClicked, OnExit, OnAction;
-    public UnityEvent UnSelected;
+    public UnityEvent OnClicked, OnExit, OnAction, UnSelected;
 
-    public bool IsPointerOverUI() => EventSystem.current.IsPointerOverGameObject();
+    private bool IsPointerOverUI() => EventSystem.current.IsPointerOverGameObject();
 
     private void Awake()
     {
@@ -25,9 +24,8 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetSelectedMapPosition()
     {
-        Vector2 mousePosition =sceneCamera.ScreenToWorldPoint(Input.mousePosition);;
-        Vector2 selectedMapPosition = new Vector2(mousePosition.x, mousePosition.y);
-        return selectedMapPosition;
+        Vector2 mousePosition =sceneCamera.ScreenToWorldPoint(Input.mousePosition);
+        return mousePosition;
     }
     
     private void Update()

@@ -5,8 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class GridData
 {
-    private Dictionary<Vector2Int, PlacementData> _placedObjects = new();
-    readonly Tilemap _floorTilemap;
+    private readonly Dictionary<Vector2Int, PlacementData> _placedObjects = new();
+    private readonly Tilemap _floorTilemap;
 
     public GridData(Tilemap tilemap)
     {
@@ -107,8 +107,8 @@ public class GridData
 
     public int GetRepresentationIndex(Vector2Int cellPos)
     {
-        if (_placedObjects.ContainsKey(cellPos))
-            return _placedObjects[cellPos].placedObjectIndex;
+        if (_placedObjects.TryGetValue(cellPos, out var o))
+            return o.placedObjectIndex;
         return -1;
     }
 

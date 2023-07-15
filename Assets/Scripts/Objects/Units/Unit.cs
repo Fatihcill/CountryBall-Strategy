@@ -1,23 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public abstract class Unit : ObjectModel
 {
     public int speed;
-    private bool _changedPos;
-    public Cell unitCell;   
-    protected readonly Cell Target = new(0, 0);
+    public Cell unitCell;
+    public List<Vector2Int> targetNeighbours;
     protected ObjectModel TargetGameObject;
     protected UnitMovement UnitMove;
     protected AnimManager AnimManager;
     private Animator _anim;
-    [FormerlySerializedAs("Neighbours")] [FormerlySerializedAs("test")] public List<Vector2Int> targetNeighbours;
+    private Cell _target;
+    private bool _changedPos;
+ 
     protected virtual void Awake()
     {
         IsImmortal = false;
         speed = 5;
         unitCell = new Cell(0, 0);
+        _target = new Cell(0, 0);
         _anim = GetComponent<Animator>();
     }
 
@@ -46,24 +47,24 @@ public abstract class Unit : ObjectModel
     }
 
     protected abstract void ActionToTarget();
-    
-    public void SetTargetPosition() 
+
+    private void SetTargetPosition() 
     {
-        Target.pos = Map.Instance.cellIndicator.currentCell.pos;
+        _target.pos = Map.Instance.cellIndicator.currentCell.pos;
         GetTargetObject();
-        UnitMove.InitializePathFinding(unitCell, Target);
+        UnitMove.InitializePathFinding(unitCell, _target);
     }
 
     private void GetTargetObject()
     {
         bool foundNeighbour = false;
-        int targetIndex = Map.Instance.gridData.GetRepresentationIndex(Target.pos);
+        int targetIndex = Map.Instance.gridData.GetRepresentationIndex(_target.pos);
         TargetGameObject = GameManager.Instance.placementSystem.objectPlacer.GetPlacedObject(targetIndex);
-        targetNeighbours = Map.Instance.gridData.GetNeighboursOfPlacedObject(Target.pos, unitCell.pos);
+        targetNeighbours = Map.Instance.gridData.GetNeighboursOfPlacedObject(_target.pos, unitCell.pos);
         targetNeighbours = Map.Instance.gridData.ReorderNeighboursByDistance(targetNeighbours, unitCell.pos);
         if (targetNeighbours == null)
         {
-            Target.pos = unitCell.pos;
+            _target.pos = unitCell.pos;
             return;
         }
         foreach (Vector2Int neighbour in targetNeighbours)
@@ -71,15 +72,15 @@ public abstract class Unit : ObjectModel
             if (Map.Instance.IsCellAvailable(neighbour))
             {
                 foundNeighbour = true;
-                Target.pos = neighbour;
+                _target.pos = neighbour;
                 break;
             }
         }
         if (!foundNeighbour)
             TargetGameObject = null;
     }
-    
-    protected void StartAction()
+
+    private void StartAction()
     {
         SetTargetPosition();
         if (TargetGameObject != null)

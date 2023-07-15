@@ -17,10 +17,10 @@ public class UnitMovement
     private readonly int _index;
     private readonly int _speed;
     private readonly Transform _transform;
-    private AnimManager _animManager;
+    private readonly AnimManager _animManager;
     
     //Rotate
-    private SpriteRenderer _spriteRenderer;
+    private readonly SpriteRenderer _spriteRenderer;
     private float _angle;
     
     public UnitMovement (ref Cell unitCell, Transform transform, Vector2Int size, int id, int index, int speed, AnimManager anim)
@@ -62,7 +62,7 @@ public class UnitMovement
         if (!_changedPos && !(currentIndex == -1 || currentIndex == _index)) // RECALCULATE PATH IF CELL IS NOT AVAILABLE
         {
             _animManager.SetAnim(AnimationTypes.Walk, false);
-            InitializePathFinding(_unitCell, _pathVectorList[_pathVectorList.Count - 1]);
+            InitializePathFinding(_unitCell, _pathVectorList[^1]);
         }
         else if (distance > 0.1f)
         {
@@ -102,7 +102,7 @@ public class UnitMovement
     private void RotateTransform()
     {
         _angle = Mathf.Atan2(_moveDir.y, _moveDir.x) * Mathf.Rad2Deg;
-        if (_angle >= -90f && _angle <= 90f)
+        if (_angle is >= -90f and <= 90f)
         {
             _spriteRenderer.flipX = true;
         }

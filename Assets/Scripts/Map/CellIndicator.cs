@@ -28,6 +28,7 @@ public class CellIndicator : MonoBehaviour
     {
         _spriteRenderer.color = color;
     }
+    
     public void StartPlacement(Sprite preview, Vector3 size)
     {
         _spriteRenderer.color = Color.white;
@@ -41,5 +42,4 @@ public class CellIndicator : MonoBehaviour
         _spriteRenderer.sprite = _defaultSprite;
         cellOffset = _defaultCellOffset;
     }
-
 }

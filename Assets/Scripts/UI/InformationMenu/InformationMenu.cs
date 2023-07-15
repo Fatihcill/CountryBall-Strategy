@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +10,7 @@ public class InformationMenu: MonoBehaviour
     [SerializeField]private GameObject []productionButtons;
     [SerializeField]private GameObject buttonPrefab;
     [SerializeField]private UIManager uiManager;
+    
     private void Awake()
     {
         itemName = transform.Find("Name").GetComponent<TextMeshProUGUI>();

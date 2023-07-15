@@ -1,7 +1,6 @@
 ﻿    using System;
     using System.Collections.Generic;
     using UnityEngine;
-    using UnityEngine.Pool;
     using UnityEngine.UI;
 
     public class ProductScroll : MonoBehaviour
@@ -34,25 +33,22 @@
             _numberOfLine = (int)Math.Ceiling(_rectTransform.rect.height / _width);
             for (int j = 0; j < (_numberOfLine * 2); j++)
             {
-                for (int i = 0; i < items.Length; i++)
-                {
-                    objectPool.Create(items[i], content);
-                }            
+                InstantiateItem();
             }
         }
         
         private void InstantiateItem()
         {
-            for (int i = 0; i < items.Length; i++)
+            foreach (var t in items)
             {
-                cloneItems.Add(objectPool.Create(items[i], content));
+                cloneItems.Add(objectPool.Create(t, content));
             }
         }
         
         private void MoveContent()
         {
             var position = content.position;
-            position = new Vector3(position.x, position.y + _width * (_numberOfLine) * 2, position.z);
+            position = new Vector3(position.x, position.y + _width * (_numberOfLine), position.z);
             content.position = position;
         }
 

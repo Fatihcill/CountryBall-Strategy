@@ -8,6 +8,7 @@ public class Cell
     public Vector2 worldPos;
     public int gCost, hCost;
     public Cell parent;
+    
     public int fCost => gCost + hCost;
 
     public Cell(int x, int y)

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class Pathfinding : MonoBehaviour
         if (!Map.Instance.IsCellAvailable(targetPos, sourceSize))
         {
             Vector2 direction = startPos - targetPos;
-            Vector2Int adjustedTargetPos = Vector2Int.zero;
+            Vector2Int adjustedTargetPos;
             for (int i = 1; i <= Mathf.Max(Mathf.Abs(direction.x), Mathf.Abs(direction.y)); i++)
             {
                 Vector2 offset = direction.normalized * i;
@@ -23,7 +22,7 @@ public class Pathfinding : MonoBehaviour
     
     public List<Cell> FindPath(Cell source, Cell destination, Vector2Int sourceSize, int index)
     {
-        Cell current = null;
+        Cell current;
         List<Cell> openSet = new();
         HashSet<Cell> closedSet = new();
         openSet.Add(source);

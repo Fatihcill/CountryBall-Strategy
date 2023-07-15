@@ -1,7 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Pool;
-using UnityEngine.Serialization;
 
 public class ObjectModel : MonoBehaviour
 {
@@ -41,5 +39,4 @@ public class ObjectModel : MonoBehaviour
             GameManager.Instance.placementSystem.objectPlacer.DestroyObjectAt(placedObjectIndex);
         }
     }
-    
 }

@@ -2,7 +2,6 @@
 
 public class PowerSystem
 {
-    public event EventHandler OnPowerChanged;
     private int _power;
     public PowerSystem(int power)
     {
@@ -19,6 +18,5 @@ public class PowerSystem
         _power += amount;
         if (_power < 0) 
             _power = 0;
-        if (OnPowerChanged != null) OnPowerChanged(this, EventArgs.Empty);
     }
 }
